@@ -1,29 +1,25 @@
 <template>
   <v-app>
-    <TopNavBar />
-    <SideBar />
+    <router-view name="topNavBar"></router-view>
+    <router-view name="sideBar"></router-view>
+
     <v-content>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
-	<FooterBar />
+    
+	<router-view name="footerBar"></router-view>
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import TopNavBar from "@/components/TopNavBar.vue";
-import SideBar from "@/components/SideBar.vue";
-import FooterBar from "@/components/FooterBar.vue";
 
 @Component({
-  name: "App",
-  components: {
-    TopNavBar,
-	SideBar,
-	FooterBar
-  }
+	name: "App",
+	components: {
+	}
 })
 export default class App extends Vue {}
 </script>

@@ -45,9 +45,6 @@
   </v-navigation-drawer>
 </template>
 
-<style lang="scss" scoped>
-</style>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
@@ -56,3 +53,6 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class SideBar extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+</style>
