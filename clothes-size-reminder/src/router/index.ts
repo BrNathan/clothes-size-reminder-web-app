@@ -13,8 +13,8 @@ const layout = {
 	footerBar: FooterBar
 };
 
-const Home = () => import('../views/Home.vue');
-const Error404 = () => import('../views/Error404.vue');
+const Home = () => import('../views/pages/Home.vue');
+const Error404 = () => import('../views/without-layout/Error404.vue');
 
 const routes = [
 	{
