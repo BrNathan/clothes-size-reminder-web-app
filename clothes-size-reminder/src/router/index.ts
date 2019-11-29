@@ -1,11 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import TopNavBar from "@/components/TopNavBar.vue";
-import SideBar from "@/components/SideBar.vue";
-import FooterBar from "@/components/FooterBar.vue";
+import TopNavBar from "@/components/shared/TopNavBar.vue";
+import SideBar from "@/components/shared/SideBar.vue";
+import FooterBar from "@/components/shared/FooterBar.vue";
 
 Vue.use(VueRouter);
+
+const baseDocumentPageTitle = 'Clothes Reminder';
+const separatorPageTitle = '|';
 
 const layout = {
 	topNavBar: TopNavBar,
@@ -40,6 +43,15 @@ const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
 	routes
+});
+
+router.beforeEach((to, from, next) => {
+	let documentTitle: string = baseDocumentPageTitle;
+	if(to.meta.title){
+		documentTitle += ' ' + separatorPageTitle + ' ' + to.meta.title;
+	}
+	document.title = documentTitle;
+	next();
 });
 
 export default router
