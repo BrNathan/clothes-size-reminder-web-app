@@ -8,18 +8,18 @@
         <router-view></router-view>
       </v-container>
     </v-content>
-    
+
 	<router-view name="footerBar"></router-view>
   </v-app>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
-	name: "App",
-	components: {
-	}
+  name: 'App',
+  components: {
+  },
 })
 export default class App extends Vue {}
 </script>
