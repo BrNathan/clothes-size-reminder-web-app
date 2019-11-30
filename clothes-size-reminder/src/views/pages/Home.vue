@@ -1,7 +1,6 @@
 <template>
   <div id="home">
     <h1>Home Page</h1>
-    <h1>{{toto}}</h1>
   </div>
 </template>
 
@@ -12,6 +11,6 @@ import { Component, Vue } from 'vue-property-decorator';
   components: {},
 })
 export default class Home extends Vue {
-  public toto = 're';
+
 }
 </script>
