@@ -1,6 +1,6 @@
 <template>
   <div>
-	  <h1>Error 404 Page</h1>
+    <h1>Error 404 Page</h1>
     <router-link :to="{name: 'home'}">Return to Home</router-link>
   </div>
 </template>

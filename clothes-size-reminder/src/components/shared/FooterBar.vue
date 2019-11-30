@@ -1,7 +1,7 @@
 
 <template>
   <v-footer app inset>
-	  Footer
+      Footer
   </v-footer>
 </template>
 
