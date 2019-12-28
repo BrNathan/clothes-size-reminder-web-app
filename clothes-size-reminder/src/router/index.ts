@@ -1,9 +1,11 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
 
 import TopNavBar from '@/components/shared/TopNavBar.vue';
 import SideBar from '@/components/shared/SideBar.vue';
 import FooterBar from '@/components/shared/FooterBar.vue';
+
+import Home from '@/views/pages/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -16,10 +18,13 @@ const layout = {
   footerBar: FooterBar,
 };
 
-const Home = () => import('../views/pages/Home.vue');
+const Admin = () => import('../views/pages/Admin.vue');
+const AdminBrands = () => import('../components/admin/Brands.vue');
+const AdminUsers = () => import('../components/admin/Users.vue');
+const AdminClothes = () => import('../components/admin/Clothes.vue');
 const Error404 = () => import('../views/without-layout/Error404.vue');
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: '/',
     name: 'home',
@@ -27,6 +32,31 @@ const routes = [
       default: Home,
       ...layout,
     },
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    components: {
+      default: Admin,
+      ...layout,
+    },
+    children: [
+      {
+        path: 'brands',
+        name: 'AdminBrands',
+        component: AdminBrands,
+      },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: AdminUsers,
+      },
+      {
+        path: 'clothes',
+        name: 'AdminClothes',
+        component: AdminClothes,
+      },
+    ],
   },
   {
     path: '/Error404',
