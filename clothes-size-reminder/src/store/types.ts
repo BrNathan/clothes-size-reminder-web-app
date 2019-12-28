@@ -1,3 +1,6 @@
 export interface RootState {
-    version: string
+    version: StringStore,
+    name: StringStore,
 }
+
+export type StringStore = string | undefined

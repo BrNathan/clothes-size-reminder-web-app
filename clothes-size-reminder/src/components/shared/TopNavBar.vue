@@ -29,12 +29,12 @@
   </v-app-bar>
 </template>
 
-<style lang="scss" scoped>
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({})
 export default class TopNavBar extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+</style>
