@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-import TopNavBar from '@/components/shared/TopNavBar.vue';
-import SideBar from '@/components/shared/SideBar.vue';
-import FooterBar from '@/components/shared/FooterBar.vue';
+import TopNavBar from '@/components/shared/top-nav-bar.vue';
+import SideBar from '@/components/shared/side-bar.vue';
+import FooterBar from '@/components/shared/footer-bar.vue';
 
-import Home from '@/views/pages/Home.vue';
+import Home from '@/views/pages/home.vue';
 
 Vue.use(VueRouter);
 
@@ -18,11 +18,11 @@ const layout = {
   footerBar: FooterBar,
 };
 
-const Admin = () => import('../views/pages/Admin.vue');
-const AdminBrands = () => import('../components/admin/Brands.vue');
-const AdminUsers = () => import('../components/admin/Users.vue');
-const AdminClothes = () => import('../components/admin/Clothes.vue');
-const Error404 = () => import('../views/without-layout/Error404.vue');
+const Admin = () => import('../views/pages/admin.vue');
+const AdminBrands = () => import('../components/admin/brands.vue');
+const AdminUsers = () => import('../components/admin/users.vue');
+const AdminClothes = () => import('../components/admin/clothes.vue');
+const Error404 = () => import('../views/without-layout/error-404.vue');
 
 const routes: RouteConfig[] = [
   {

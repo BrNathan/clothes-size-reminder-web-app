@@ -20,49 +20,9 @@
               vertical
             ></v-divider>
             <v-spacer></v-spacer>
-            <!-- *** BEGIN NEW BRANDS COMPONENT *** -->
-            <!-- <v-dialog v-model="dialog" max-width="500px">
-              <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="headline">{{ formTitle }}</span>
-                </v-card-title>
-
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                        v-model="editedItem.protein"
-                        label="Protein (g)"></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog> -->
-            <v-btn small rounded color="primary">New (not working)</v-btn>
-            <!-- *** END NEW BRANDS COMPONENT *** -->
+            <CreateBrand v-on:brand-created="newBrandCreated">
+              <template v-slot:button-text>Create new Brand</template>
+            </CreateBrand>
           </v-toolbar>
         </template>
         <template v-slot:item.IsConfirmed="{ item }">
@@ -73,7 +33,7 @@
           close-icon="mdi-checkbox-marked-circle"
           @click:close="ConfirmBrand(item)"
           >
-            To be confirmed
+            To be validated
           </v-chip>
         </template>
         <template v-slot:item.Action="{ item }">
@@ -94,10 +54,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import CreateBrand from '@/components/shared/brands/create-brand.vue';
 import TableHeader from '@/utils/types/table-header';
 
 @Component({
-  components: {},
+  components: {
+    CreateBrand,
+  },
 })
 export default class Brands extends Vue {
   public isLoading: boolean = false;
@@ -135,6 +98,33 @@ export default class Brands extends Vue {
       IsConfirmed: true,
     },
   ];
+
+  public newBrandCreated() {
+    this.loadBrands();
+  }
+
+  public loadBrands() {
+    this.isLoading = true;
+    // Todo : load brands
+    const that = this;
+    setTimeout(() => {
+      that.brands = [
+        {
+          Id: 2,
+          Name: `Test${(new Date()).toString()}`,
+          CorporateName: 'Test corporate',
+          IsConfirmed: false,
+        },
+        {
+          Id: 3,
+          Name: 'Test2',
+          CorporateName: `Test2 corporate2${(new Date()).toString()}`,
+          IsConfirmed: true,
+        },
+      ];
+      that.isLoading = false;
+    }, 2000);
+  }
 
   public EditBrand = (brand: any) => {
     console.error('edit', brand);
