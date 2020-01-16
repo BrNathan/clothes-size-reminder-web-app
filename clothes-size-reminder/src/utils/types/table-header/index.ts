@@ -1,4 +1,4 @@
-interface TableHeader {
+interface ITableHeader {
     text: string;
     value: string;
     align?: 'start' | 'center' | 'end';
@@ -11,4 +11,4 @@ interface TableHeader {
     sort?: (a: any, b: any) => number;
 }
 
-export default TableHeader;
+export default ITableHeader;

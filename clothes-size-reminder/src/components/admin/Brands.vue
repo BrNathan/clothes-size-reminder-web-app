@@ -3,13 +3,14 @@
     <v-skeleton-loader
         :type="skeletonType"
         :loading="isLoading"
+        transition="fade-transition"
       >
       <v-data-table
         :headers="headers"
         :items="brands"
         :disable-pagination="true"
         :hide-default-footer="true"
-        sort-by="Name"
+        sort-by="name"
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
@@ -20,23 +21,30 @@
               vertical
             ></v-divider>
             <v-spacer></v-spacer>
-            <CreateBrand v-on:brand-created="newBrandCreated">
-              <template v-slot:button-text>Create new Brand</template>
-            </CreateBrand>
+            <v-btn text icon v-on:click="refreshBrand">
+              <v-icon>mdi-cached</v-icon>
+            </v-btn>
+            <create-brand v-on:brand-created="newBrandCreated">
+              <template v-slot:button>
+                <v-btn color="primary" dark>
+                  Create new Brand
+                </v-btn>
+              </template>
+            </create-brand>
           </v-toolbar>
         </template>
-        <template v-slot:item.IsConfirmed="{ item }">
-          <v-chip v-if="!item.IsConfirmed"
+        <template v-slot:item.isValidated="{ item }">
+          <v-chip v-if="!item.isValidated"
           small
           color="warning"
           :close="true"
           close-icon="mdi-checkbox-marked-circle"
-          @click:close="ConfirmBrand(item)"
+          @click:close="validateBrand(item)"
           >
             To be validated
           </v-chip>
         </template>
-        <template v-slot:item.Action="{ item }">
+        <template v-slot:item.action="{ item }">
           <v-icon small class="mr-2"
           @click="EditBrand(item)"
           >mdi-pencil</v-icon>
@@ -53,13 +61,16 @@
 </template>
 
 <script lang="ts">
+import Axios, { AxiosResponse } from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
-import CreateBrand from '@/components/shared/brands/create-brand.vue';
-import TableHeader from '@/utils/types/table-header';
+import createBrand from '@/components/shared/brands/create-brand.vue';
+import ITableHeader from '@/utils/types/table-header';
+import { IBrand } from '@/utils/types/brand';
+import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
 
 @Component({
   components: {
-    CreateBrand,
+    'create-brand': createBrand,
   },
 })
 export default class Brands extends Vue {
@@ -67,63 +78,55 @@ export default class Brands extends Vue {
 
   public skeletonType: string = 'table';
 
-  public headers: TableHeader[] = [
+  public headers: ITableHeader[] = [
     {
       text: 'Name',
-      value: 'Name',
+      value: 'name',
+      width: '40%',
     }, {
       text: 'Corporate name',
-      value: 'CorporateName',
+      value: 'corporateName',
+      width: '35%',
     }, {
       text: 'Status',
-      value: 'IsConfirmed',
+      value: 'isValidated',
+      width: '15%',
     }, {
-      text: '',
-      value: 'Action',
+      text: 'Actions',
+      value: 'action',
       sortable: false,
       filterable: false,
+      width: '10%',
     }];
 
-  public brands: any[] = [
-    {
-      Id: 2,
-      Name: 'Test',
-      CorporateName: 'Test corporate',
-      IsConfirmed: false,
-    },
-    {
-      Id: 3,
-      Name: 'Test2',
-      CorporateName: 'Test2 corporate2',
-      IsConfirmed: true,
-    },
-  ];
+  public brands: IBrand[] = [];
+
+  public mounted() {
+    this.loadBrands();
+  }
 
   public newBrandCreated() {
     this.loadBrands();
   }
 
+  public refreshBrand() {
+    this.loadBrands();
+  }
+
   public loadBrands() {
     this.isLoading = true;
-    // Todo : load brands
-    const that = this;
-    setTimeout(() => {
-      that.brands = [
-        {
-          Id: 2,
-          Name: `Test${(new Date()).toString()}`,
-          CorporateName: 'Test corporate',
-          IsConfirmed: false,
-        },
-        {
-          Id: 3,
-          Name: 'Test2',
-          CorporateName: `Test2 corporate2${(new Date()).toString()}`,
-          IsConfirmed: true,
-        },
-      ];
-      that.isLoading = false;
-    }, 2000);
+    Axios.get<any, AxiosResponse<IBrand[]>>(BRAND_GET_ALL)
+      .catch((error) => {
+        console.error(error);
+        debugger;
+      })
+      .then((result) => {
+        console.log(result);
+        this.brands = (result as AxiosResponse<IBrand[]>).data;
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 
   public EditBrand = (brand: any) => {
@@ -134,8 +137,28 @@ export default class Brands extends Vue {
     console.error('delete', brand);
   }
 
-  public ConfirmBrand = (brand: any) => {
-    console.error('confirm', brand);
+  public validateBrand(brand: IBrand) {
+    const copyOldBrand: IBrand = { ...brand };
+    brand.isValidated = true;
+    const newBrand: IBrand = { ...brand };
+    this.updateBrand(newBrand, copyOldBrand);
+  }
+
+  public updateBrand(newBrand: IBrand, oldBrand: IBrand) {
+    Axios.put<any, AxiosResponse<IBrand>>(`${BRAND_UPDATE}/${newBrand.id}`, newBrand)
+      .catch((error) => {
+        console.error(error);
+        this.brands = this.brands.map((b: IBrand) => {
+          let br: IBrand = b;
+          if (br.id === newBrand.id) {
+            br = oldBrand;
+          }
+          return br;
+        });
+      })
+      .then((result) => {
+        console.log(result);
+      });
   }
 }
 </script>

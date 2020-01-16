@@ -2,11 +2,13 @@
   <div id="create-update-brand">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">
-          <slot name="button-text">
-            Add Brand
+        <div v-on="on">
+          <slot name="button">
+            <v-btn color="primary" dark>
+              Create new Brand
+            </v-btn>
           </slot>
-        </v-btn>
+        </div>
       </template>
       <v-card>
         <v-card-title>
@@ -58,6 +60,7 @@ import {
 import Axios from 'axios';
 import TableHeader from '@/utils/types/table-header';
 import { INewBrand } from '@/utils/types/brand';
+import { BRAND_CREATE } from '@/utils/api-endpoints';
 
 @Component({
   components: {},
@@ -83,7 +86,6 @@ export default class CreateBrand extends Vue {
     }
 
     public focusCorporate() {
-      console.log('focusCorporate');
       this.isBrandCorporateNameFocus = true;
     }
 
@@ -94,7 +96,7 @@ export default class CreateBrand extends Vue {
         corporateName: this.brandCorporateName,
         isValidated: true,
       };
-      Axios.post('https://localhost:44330/api/brand', this.newBrand)
+      Axios.post(BRAND_CREATE, this.newBrand)
         .catch((error) => {
           console.error(error);
           debugger;
