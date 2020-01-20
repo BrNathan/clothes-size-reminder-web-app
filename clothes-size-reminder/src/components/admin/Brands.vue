@@ -24,7 +24,7 @@
             <v-btn text icon v-on:click="refreshBrand">
               <v-icon>mdi-cached</v-icon>
             </v-btn>
-            <create-brand v-on:brand-created="newBrandCreated">
+            <create-brand v-on:brand-created="onNewBrandCreated">
               <template v-slot:button>
                 <v-btn color="primary" dark>
                   Create new Brand
@@ -35,22 +35,33 @@
         </template>
         <template v-slot:item.isValidated="{ item }">
           <v-chip v-if="!item.isValidated"
-          small
-          color="warning"
-          :close="true"
-          close-icon="mdi-checkbox-marked-circle"
-          @click:close="validateBrand(item)"
+            small
+            color="warning"
+            :close="true"
+            close-icon="mdi-checkbox-marked-circle"
+            @click:close="validateBrand(item)"
           >
             To be validated
           </v-chip>
         </template>
         <template v-slot:item.action="{ item }">
-          <v-icon small class="mr-2"
+          <update-brand :brand-to-update="item" v-on:brand-update="onBrandUpdated">
+            <template v-slot:button>
+              <v-btn text icon>
+                <v-icon small class="mr-2">mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+          </update-brand>
+          <!-- <v-icon small class="mr-2"
           @click="EditBrand(item)"
-          >mdi-pencil</v-icon>
-          <v-icon small
-          @click="DeleteBrand(item)"
-          >mdi-delete</v-icon>
+          >mdi-pencil</v-icon> -->
+          <delete-brand :brand-to-delete="item" v-on:brand-delete="onBrandDeleted">
+            <template v-slot:button>
+              <v-btn text icon>
+                <v-icon small class="mr-2">mdi-delete</v-icon>
+              </v-btn>
+            </template>
+          </delete-brand>
         </template>
         <template v-slot:no-data>
           No data
@@ -64,6 +75,8 @@
 import Axios, { AxiosResponse } from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 import createBrand from '@/components/shared/brands/create-brand.vue';
+import deleteBrand from '@/components/shared/brands/delete-brand.vue';
+import updateBrand from '@/components/shared/brands/update-brand.vue';
 import ITableHeader from '@/utils/types/table-header';
 import { IBrand } from '@/utils/types/brand';
 import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
@@ -71,6 +84,8 @@ import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
 @Component({
   components: {
     'create-brand': createBrand,
+    'delete-brand': deleteBrand,
+    'update-brand': updateBrand,
   },
 })
 export default class Brands extends Vue {
@@ -105,24 +120,38 @@ export default class Brands extends Vue {
     this.loadBrands();
   }
 
-  public newBrandCreated() {
+  public onNewBrandCreated(): void {
     this.loadBrands();
   }
 
-  public refreshBrand() {
+  public onBrandDeleted(brandDeleted: IBrand): void {
+    this.brands = [...this.brands].filter(brand => brand.id !== brandDeleted.id);
+  }
+
+  public onBrandUpdated(brandUpdated: IBrand): void {
+    this.brands = [...this.brands].map((brand) => {
+      if (brand.id === brandUpdated.id) {
+        return { ...brandUpdated };
+      }
+
+      return { ...brand };
+    });
+  }
+
+  public refreshBrand(): void {
     this.loadBrands();
   }
 
-  public loadBrands() {
+  public loadBrands(): void {
     this.isLoading = true;
     Axios.get<any, AxiosResponse<IBrand[]>>(BRAND_GET_ALL)
-      .catch((error) => {
-        console.error(error);
-        debugger;
-      })
       .then((result) => {
         console.log(result);
         this.brands = (result as AxiosResponse<IBrand[]>).data;
+      })
+      .catch((error) => {
+        console.error(error);
+        debugger;
       })
       .finally(() => {
         this.isLoading = false;
@@ -133,31 +162,23 @@ export default class Brands extends Vue {
     console.error('edit', brand);
   }
 
-  public DeleteBrand = (brand: any) => {
-    console.error('delete', brand);
-  }
-
-  public validateBrand(brand: IBrand) {
+  public validateBrand(brand: IBrand): void {
     const copyOldBrand: IBrand = { ...brand };
     brand.isValidated = true;
     const newBrand: IBrand = { ...brand };
-    this.updateBrand(newBrand, copyOldBrand);
-  }
-
-  public updateBrand(newBrand: IBrand, oldBrand: IBrand) {
     Axios.put<any, AxiosResponse<IBrand>>(`${BRAND_UPDATE}/${newBrand.id}`, newBrand)
+      .then((result) => {
+        console.log(result);
+      })
       .catch((error) => {
         console.error(error);
         this.brands = this.brands.map((b: IBrand) => {
           let br: IBrand = b;
           if (br.id === newBrand.id) {
-            br = oldBrand;
+            br = copyOldBrand;
           }
           return br;
         });
-      })
-      .then((result) => {
-        console.log(result);
       });
   }
 }
