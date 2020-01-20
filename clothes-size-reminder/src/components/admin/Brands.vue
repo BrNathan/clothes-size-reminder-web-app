@@ -52,9 +52,6 @@
               </v-btn>
             </template>
           </update-brand>
-          <!-- <v-icon small class="mr-2"
-          @click="EditBrand(item)"
-          >mdi-pencil</v-icon> -->
           <delete-brand :brand-to-delete="item" v-on:brand-delete="onBrandDeleted">
             <template v-slot:button>
               <v-btn text icon>

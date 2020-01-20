@@ -23,35 +23,67 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-folder</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>My Files</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-account-multiple</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Shared with me</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-star</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Starred</v-list-item-title>
-      </v-list-item>
+      <template v-for="(menu, index) in sidebarMenuItem">
+        <template v-if="menu.child && menu.child.length > 0">
+          <v-list-group :key="index"
+            :prepend-icon="menu.icon"
+            v-model="menu.isExpanded"
+            value="true"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>{{menu.title}}</v-list-item-title>
+            </template>
+            <v-list-item
+              v-for="(child, indexChild) in menu.child" :key="indexChild"
+              :to="{name: child.pathName}"
+              exact
+              color="primary"
+            >
+              <v-list-item-icon>
+                <v-icon>{{child.icon}}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{child.title}}</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </template>
+        <template v-else>
+          <v-list-item
+            :to="{name: menu.pathName}" :key="index"
+            color="primary"
+            exact
+          >
+            <v-list-item-icon>
+              <v-icon>{{menu.icon}}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{menu.title}}</v-list-item-title>
+          </v-list-item>
+        </template>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import ISidebarItem from '@/utils/types/sidebar-item';
 
 @Component({
   components: {},
 })
-export default class SideBar extends Vue {}
+export default class SideBar extends Vue {
+  public sidebarMenuItem: ISidebarItem[] = [
+    {
+      title: 'Home',
+      icon: 'mdi-home',
+      pathName: 'home',
+    },
+    {
+      title: 'Administration',
+      icon: 'mdi-tune',
+      pathName: 'admin',
+    },
+  ];
+}
 </script>
 
 <style lang="scss" scoped>
