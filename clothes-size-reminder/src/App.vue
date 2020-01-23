@@ -13,11 +13,23 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { STORE_REFERENTIAL } from '@/store/namespace';
 
 @Component({
   name: 'App',
-  components: {
-  },
+  components: {},
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  @Action('fetchGenderData', { namespace: STORE_REFERENTIAL })
+  fetchGenderData: any;
+
+  @Action('fetchClothesCategoryData', { namespace: STORE_REFERENTIAL })
+  fetchClothesCategoryData: any;
+
+  mounted() {
+    this.fetchGenderData();
+    this.fetchClothesCategoryData();
+  }
+}
 </script>
