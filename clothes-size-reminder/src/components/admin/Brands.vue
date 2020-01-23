@@ -109,7 +109,8 @@ export default class Brands extends Vue {
       sortable: false,
       filterable: false,
       width: '10%',
-    }];
+    },
+  ];
 
   public brands: IBrand[] = [];
 
