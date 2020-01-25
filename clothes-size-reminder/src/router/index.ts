@@ -50,6 +50,7 @@ const routes: RouteConfig[] = [
         path: 'users',
         name: 'AdminUsers',
         component: AdminUsers,
+        redirect: { name: 'admin' },
       },
       {
         path: 'clothes',

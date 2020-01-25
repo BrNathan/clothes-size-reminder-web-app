@@ -1,15 +1,17 @@
 <template>
   <div id="admin">
     <v-card>
-        <v-card-Title class="text-center justify-center">
-            <h1>Admin</h1>
-        </v-card-Title>
-        <v-tabs grow v-model="activeTabs" class="mb-4">
-            <v-tab v-for="(tab, index) in tabs" :key="index" :to="{name: tab.PathName}">
-                {{tab.Title}}
-            </v-tab>
-        </v-tabs>
-        <router-view></router-view>
+      <v-card-Title class="text-center justify-center">
+        <h1>Admin</h1>
+      </v-card-Title>
+      <v-tabs grow v-model="activeTabs" class="mb-4">
+        <template v-for="(tab, index) in tabs">
+          <v-tab :key="index" :to="{name: tab.pathName}" :disabled="tab.disabled">
+            {{tab.title}}
+          </v-tab>
+        </template>
+      </v-tabs>
+      <router-view></router-view>
     </v-card>
   </div>
 </template>
@@ -18,8 +20,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 interface Tabs {
-    Title: string;
-    PathName: string;
+    title: string;
+    pathName: string;
+    disabled: boolean;
 }
 
 @Component({
@@ -29,16 +32,19 @@ export default class Admin extends Vue {
     public activeTabs: number = -1;
 
     public tabs: Tabs[] = [{
-      Title: 'Brands',
-      PathName: 'AdminBrands',
+      title: 'Brands',
+      pathName: 'AdminBrands',
+      disabled: false,
     },
     {
-      Title: 'Users',
-      PathName: 'AdminUsers',
+      title: 'Users',
+      pathName: 'AdminUsers',
+      disabled: true,
     },
     {
-      Title: 'Clothes',
-      PathName: 'AdminClothes',
+      title: 'Clothes',
+      pathName: 'AdminClothes',
+      disabled: false,
     },
     ];
 }
