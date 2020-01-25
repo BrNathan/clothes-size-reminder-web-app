@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
 import { ReferentialState } from './types';
-import IGender from '@/utils/types/gender';
+import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 
 const mutations: MutationTree<ReferentialState> = {

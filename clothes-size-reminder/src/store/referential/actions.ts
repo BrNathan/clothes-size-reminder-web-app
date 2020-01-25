@@ -3,7 +3,7 @@ import { ActionTree } from 'vuex';
 import { ReferentialState } from './types';
 import { RootState } from '../types';
 import { GENDER_GET_ALL, CLOTHES_CATEGORY_GET_ALL } from '@/utils/api-endpoints';
-import IGender from '@/utils/types/gender';
+import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 
 const actions: ActionTree<ReferentialState, RootState> = {
