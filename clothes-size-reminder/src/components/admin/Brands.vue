@@ -45,7 +45,7 @@
           </v-chip>
         </template>
         <template v-slot:item.action="{ item }">
-          <update-brand :brand-to-update="item" v-on:brand-update="onBrandUpdated">
+          <update-brand :brand-to-update="{...item}" v-on:brand-update="onBrandUpdated">
             <template v-slot:button>
               <v-btn text icon>
                 <v-icon small class="mr-2">mdi-pencil</v-icon>

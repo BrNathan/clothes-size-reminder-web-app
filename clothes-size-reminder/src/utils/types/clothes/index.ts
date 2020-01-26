@@ -9,7 +9,7 @@ export interface INewClothes {
     code: string;
     label: string;
     clothesCategoryId: number;
-    clothesGenderId: number;
+    genderId: number;
 }
 
 export interface IClothesExpand {

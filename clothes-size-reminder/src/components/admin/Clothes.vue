@@ -21,17 +21,16 @@
               vertical
             ></v-divider>
             <v-spacer></v-spacer>
-            <!-- TODO: -->
-              <!--<v-btn text icon v-on:click="refreshClothes">
+            <v-btn text icon v-on:click="refreshClothes">
               <v-icon>mdi-cached</v-icon>
-            </v-btn> -->
-            <!-- <create-clothes v-on:clothes-created="onNewClothesCreated">
+            </v-btn>
+            <create-clothes v-on:clothes-created="onNewClothesCreated">
               <template v-slot:button>
                 <v-btn color="primary" dark>
                   Create new Clothes
                 </v-btn>
               </template>
-            </create-clothes> -->
+            </create-clothes>
           </v-toolbar>
         </template>
         <template v-slot:item.clothesCategoryId="{ item }">
@@ -51,20 +50,20 @@
           </v-icon>
         </template>
         <template v-slot:item.action="{ item }">
-          <!-- <update-clothes :clothes-to-update="item" v-on:clothes-update="onClothesUpdated">
+          <update-clothes :clothes-to-update="{...item}" v-on:clothes-update="onClothesUpdated">
             <template v-slot:button>
               <v-btn text icon>
                 <v-icon small class="mr-2">mdi-pencil</v-icon>
               </v-btn>
             </template>
-          </update-clothes> -->
-          <!-- <delete-clothes :clothes-to-delete="item" v-on:clothes-delete="onClothesDeleted">
+          </update-clothes>
+          <delete-clothes :clothes-to-delete="item" v-on:clothes-delete="onClothesDeleted">
             <template v-slot:button>
               <v-btn text icon>
                 <v-icon small class="mr-2">mdi-delete</v-icon>
               </v-btn>
             </template>
-          </delete-clothes> -->
+          </delete-clothes>
         </template>
         <template v-slot:no-data>
           No data
@@ -84,13 +83,18 @@ import { CLOTHES_GET_ALL, CLOTHES_CATEGORY_GET_ALL } from '@/utils/api-endpoints
 import IClothesCategory from '@/utils/types/clothes-category';
 import { IGender, GenderEnum, GenderIcon } from '../../utils/types/gender';
 import { STORE_REFERENTIAL } from '../../store/namespace';
+import createClothes from '@/components/shared/clothes/create-clothes.vue';
+import deleteClothes from '@/components/shared/clothes/delete-clothes.vue';
+import updateClothes from '@/components/shared/clothes/update-clothes.vue';
 
 @Component({
-  components: {},
+  components: {
+    'create-clothes': createClothes,
+    'delete-clothes': deleteClothes,
+    'update-clothes': updateClothes,
+  },
 })
 export default class Clothes extends Vue {
-  @Getter('genders', { namespace: STORE_REFERENTIAL }) genderReferential?: IGender[];
-
   @Getter('genderById', { namespace: STORE_REFERENTIAL }) genderById?: (genderId: number) => IGender;
 
   @Getter('clothesCategoryById', { namespace: STORE_REFERENTIAL }) clothesCategoryById?: (clothesCategoryId: number) => IClothesCategory;
@@ -128,6 +132,10 @@ export default class Clothes extends Vue {
   public clothes: IClothes[] = [];
 
   public mounted() {
+    this.loadClothes();
+  }
+
+  public refreshClothes():void {
     this.loadClothes();
   }
 
@@ -199,6 +207,24 @@ export default class Clothes extends Vue {
       colour += (`00${value.toString(16)}`).substr(-2);
     }
     return colour;
+  }
+
+  public onNewClothesCreated(): void {
+    this.loadClothes();
+  }
+
+  public onClothesDeleted(clothesDeleted: IClothes): void {
+    this.clothes = [...this.clothes].filter(clothes => clothes.id !== clothesDeleted.id);
+  }
+
+  public onClothesUpdated(clothesUpdated: IClothes): void {
+    this.clothes = [...this.clothes].map((clothes) => {
+      if (clothes.id === clothesUpdated.id) {
+        return { ...clothesUpdated };
+      }
+
+      return { ...clothes };
+    });
   }
 }
 </script>
