@@ -143,12 +143,12 @@ export default class Clothes extends Vue {
     this.isLoading = true;
     Axios.get<any, AxiosResponse<IClothes[]>>(CLOTHES_GET_ALL)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         this.clothes = (result as AxiosResponse<IClothes[]>).data;
       })
       .catch((error) => {
-        console.error(error);
-        debugger;
+        // console.error(error);
+        // debugger;
       })
       .finally(() => {
         this.isLoading = false;

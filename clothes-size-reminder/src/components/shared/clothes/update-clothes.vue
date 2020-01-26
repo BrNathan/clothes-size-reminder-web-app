@@ -108,8 +108,8 @@ export default class UpdateClothes extends Vue {
         this.closeDialog();
       })
       .catch((error) => {
-        console.error(error);
-        debugger;
+        // console.error(error);
+        // debugger;
       })
       .finally(() => {
         this.isLoading = false;

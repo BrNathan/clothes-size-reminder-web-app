@@ -122,13 +122,13 @@ export default class CreateClothes extends Vue {
       };
       Axios.post(CLOTHES_CREATE, this.newClothes)
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           this.$emit('clothes-created');
           this.closeDialog();
         })
         .catch((error) => {
-          console.error(error);
-          debugger;
+          // console.error(error);
+          // debugger;
         })
         .finally(() => {
           this.isLoading = false;

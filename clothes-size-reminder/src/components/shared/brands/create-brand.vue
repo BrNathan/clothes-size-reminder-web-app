@@ -96,13 +96,13 @@ export default class CreateBrand extends Vue {
       };
       Axios.post(BRAND_CREATE, this.newBrand)
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           this.$emit('brand-created');
           this.closeDialog();
         })
         .catch((error) => {
-          console.error(error);
-          debugger;
+          // console.error(error);
+          // debugger;
         })
         .finally(() => {
           this.isLoading = false;

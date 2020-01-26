@@ -144,12 +144,12 @@ export default class Brands extends Vue {
     this.isLoading = true;
     Axios.get<any, AxiosResponse<IBrand[]>>(BRAND_GET_ALL)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         this.brands = (result as AxiosResponse<IBrand[]>).data;
       })
       .catch((error) => {
-        console.error(error);
-        debugger;
+        // console.error(error);
+        // debugger;
       })
       .finally(() => {
         this.isLoading = false;
@@ -157,7 +157,7 @@ export default class Brands extends Vue {
   }
 
   public EditBrand = (brand: any) => {
-    console.error('edit', brand);
+    // console.error('edit', brand);
   }
 
   public validateBrand(brand: IBrand): void {
@@ -166,10 +166,10 @@ export default class Brands extends Vue {
     const newBrand: IBrand = { ...brand };
     Axios.put<any, AxiosResponse<IBrand>>(`${BRAND_UPDATE}/${newBrand.id}`, newBrand)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
         this.brands = this.brands.map((b: IBrand) => {
           let br: IBrand = b;
           if (br.id === newBrand.id) {
