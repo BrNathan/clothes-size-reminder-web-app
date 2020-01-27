@@ -6,7 +6,8 @@ import { UserState } from './types';
 import { RootState } from '../types';
 
 export const state: UserState = {
-  email: null,
+  id: 1,
+  email: 'nathan.bruet@gmail.com',
 };
 
 const namespaced: boolean = true;
