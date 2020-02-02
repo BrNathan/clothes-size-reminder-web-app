@@ -1,3 +1,5 @@
+import { IReminderExtended } from '@/utils/types/reminder';
+
 export interface ReminderState {
-    reminder: any[];
+    reminder: IReminderExtended[];
 }

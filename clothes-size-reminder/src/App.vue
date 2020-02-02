@@ -13,8 +13,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
-import { STORE_REFERENTIAL } from '@/store/namespace';
+import { Action, State } from 'vuex-class';
+import { STORE_REFERENTIAL, STORE_REMINDER, STORE_USER } from '@/store/namespace';
 
 @Component({
   name: 'App',
@@ -22,14 +22,27 @@ import { STORE_REFERENTIAL } from '@/store/namespace';
 })
 export default class App extends Vue {
   @Action('fetchGenderData', { namespace: STORE_REFERENTIAL })
-  fetchGenderData: any;
+  fetchGenderData?: () => void;
 
   @Action('fetchClothesCategoryData', { namespace: STORE_REFERENTIAL })
-  fetchClothesCategoryData: any;
+  fetchClothesCategoryData?: () => void;
+
+  @Action('fetchReminderByUser', { namespace: STORE_REMINDER })
+  fetchReminderByUser?: (userId: number) => void;
+
+  @State('id', { namespace: STORE_USER })
+  userId?: number;
 
   mounted() {
-    this.fetchGenderData();
-    this.fetchClothesCategoryData();
+    if (this.fetchGenderData) {
+      this.fetchGenderData();
+    }
+    if (this.fetchClothesCategoryData) {
+      this.fetchClothesCategoryData();
+    }
+    if (this.userId && this.fetchReminderByUser) {
+      this.fetchReminderByUser(this.userId);
+    }
   }
 }
 </script>

@@ -69,7 +69,7 @@ const routes: RouteConfig[] = [
     },
     meta: {
       title: 'My reminder',
-    }
+    },
   },
   {
     path: '/Error404',
