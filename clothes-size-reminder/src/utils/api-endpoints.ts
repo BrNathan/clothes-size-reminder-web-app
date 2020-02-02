@@ -10,6 +10,6 @@ export const CLOTHES_CREATE = `${API_BASE_URL}api/clothes`;
 export const CLOTHES_UPDATE = `${API_BASE_URL}api/clothes`;
 export const CLOTHES_DELETE = `${API_BASE_URL}api/clothes`;
 
-export const CLOTHES_CATEGORY_GET_ALL = `${API_BASE_URL}api/clothesCategory`;
+export const CLOTHES_CATEGORY_GET_ALL = `${API_BASE_URL}api/clothes-category`;
 
 export const GENDER_GET_ALL = `${API_BASE_URL}api/gender`;
