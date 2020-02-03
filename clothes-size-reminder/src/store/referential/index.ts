@@ -6,6 +6,10 @@ import { ReferentialState } from './types';
 import { RootState } from '../types';
 
 export const state: ReferentialState = {
+  isClothesCategoryReady: false,
+  isClothesReady: false,
+  isGenderReady: false,
+  isSizeReady: false,
   clothesCategory: [],
   gender: [],
   size: [],

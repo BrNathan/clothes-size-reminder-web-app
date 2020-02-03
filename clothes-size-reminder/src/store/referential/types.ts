@@ -4,6 +4,10 @@ import ISize from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 
 export interface ReferentialState {
+    isGenderReady: boolean;
+    isClothesCategoryReady: boolean;
+    isSizeReady: boolean;
+    isClothesReady: boolean;
     clothesCategory: ICLothesCategory[];
     gender: IGender[];
     size: ISize[];

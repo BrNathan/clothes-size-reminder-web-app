@@ -4,7 +4,13 @@
     <router-view name="sideBar"></router-view>
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <v-skeleton-loader
+          :type="'article'"
+          :loading="!isReferentialReady()"
+          transition="fade-transition"
+        >
+          <router-view></router-view>
+        </v-skeleton-loader>
       </v-container>
     </v-content>
     <router-view name="footerBar"></router-view>
@@ -13,7 +19,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
+import { Action, State, Getter } from 'vuex-class';
 import { STORE_REFERENTIAL, STORE_REMINDER, STORE_USER } from '@/store/namespace';
 
 @Component({
@@ -36,8 +42,15 @@ export default class App extends Vue {
   @Action('fetchClothesData', { namespace: STORE_REFERENTIAL })
   fetchClothesData?: () => void;
 
+  @Getter('isReady', { namespace: STORE_REFERENTIAL })
+  isReady?: boolean;
+
   @State('id', { namespace: STORE_USER })
   userId?: number;
+
+  public isReferentialReady(): boolean {
+    return this.isReady ? this.isReady : false;
+  }
 
   mounted() {
     if (this.fetchGenderData) {

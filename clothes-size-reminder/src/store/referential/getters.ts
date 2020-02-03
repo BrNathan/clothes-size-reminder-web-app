@@ -6,6 +6,12 @@ import IClothesCategory from '@/utils/types/clothes-category';
 import ISize from '@/utils/types/size';
 
 const getters: GetterTree<ReferentialState, RootState> = {
+  isReady(state): boolean {
+    return state.isClothesCategoryReady
+      && state.isClothesReady
+      && state.isGenderReady
+      && state.isSizeReady;
+  },
   genders(state): IGender[] {
     return state.gender;
   },
