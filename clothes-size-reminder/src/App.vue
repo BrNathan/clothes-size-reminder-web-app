@@ -27,8 +27,14 @@ export default class App extends Vue {
   @Action('fetchClothesCategoryData', { namespace: STORE_REFERENTIAL })
   fetchClothesCategoryData?: () => void;
 
+  @Action('fetchSizeData', { namespace: STORE_REFERENTIAL })
+  fetchSizeData?: () => void;
+
   @Action('fetchReminderByUser', { namespace: STORE_REMINDER })
   fetchReminderByUser?: (userId: number) => void;
+
+  @Action('fetchClothesData', { namespace: STORE_REFERENTIAL })
+  fetchClothesData?: () => void;
 
   @State('id', { namespace: STORE_USER })
   userId?: number;
@@ -42,6 +48,12 @@ export default class App extends Vue {
     }
     if (this.userId && this.fetchReminderByUser) {
       this.fetchReminderByUser(this.userId);
+    }
+    if (this.fetchSizeData) {
+      this.fetchSizeData();
+    }
+    if (this.fetchClothesData) {
+      this.fetchClothesData();
     }
   }
 }

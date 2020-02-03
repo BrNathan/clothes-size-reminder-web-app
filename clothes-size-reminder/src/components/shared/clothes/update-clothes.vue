@@ -18,7 +18,8 @@
                 <v-text-field
                   label="Code*"
                   required
-                  v-model="clothesToUpdate.code">
+                  v-model="clothesToUpdate.code"
+                  disabled="true">
                 </v-text-field>
               </v-col>
               <v-col cols="12">

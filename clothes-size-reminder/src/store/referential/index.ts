@@ -8,6 +8,8 @@ import { RootState } from '../types';
 export const state: ReferentialState = {
   clothesCategory: [],
   gender: [],
+  size: [],
+  clothes: [],
 };
 
 const namespaced: boolean = true;

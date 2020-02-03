@@ -12,6 +12,8 @@ export const CLOTHES_DELETE = `${API_BASE_URL}api/clothes`;
 
 export const CLOTHES_CATEGORY_GET_ALL = `${API_BASE_URL}api/clothes-category`;
 
+export const SIZE_GET_ALL = `${API_BASE_URL}api/size`;
+
 export const GENDER_GET_ALL = `${API_BASE_URL}api/gender`;
 
 export const REMINDER_GET_ALL = `${API_BASE_URL}api/reminder`;

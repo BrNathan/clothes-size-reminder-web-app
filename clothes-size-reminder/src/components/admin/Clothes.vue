@@ -99,6 +99,8 @@ export default class Clothes extends Vue {
 
   @Getter('clothesCategoryById', { namespace: STORE_REFERENTIAL }) clothesCategoryById?: (clothesCategoryId: number) => IClothesCategory;
 
+  @Action('fetchClothesData', { namespace: STORE_REFERENTIAL }) fetchClothesData?: () => void;
+
   public isLoading: boolean = false;
 
   public skeletonType: string = 'table';
@@ -211,10 +213,12 @@ export default class Clothes extends Vue {
 
   public onNewClothesCreated(): void {
     this.loadClothes();
+    this.refreshStore();
   }
 
   public onClothesDeleted(clothesDeleted: IClothes): void {
     this.clothes = [...this.clothes].filter(clothes => clothes.id !== clothesDeleted.id);
+    this.refreshStore();
   }
 
   public onClothesUpdated(clothesUpdated: IClothes): void {
@@ -225,6 +229,13 @@ export default class Clothes extends Vue {
 
       return { ...clothes };
     });
+    this.refreshStore();
+  }
+
+  private refreshStore(): void {
+    if (this.fetchClothesData) {
+      this.fetchClothesData();
+    }
   }
 }
 </script>
