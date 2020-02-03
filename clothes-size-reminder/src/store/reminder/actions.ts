@@ -6,8 +6,7 @@ import { REMINDER_GET_ALL_EXTEND_BY_USER } from '@/utils/api-endpoints';
 import { IReminderExtended } from '@/utils/types/reminder';
 
 const actions: ActionTree<ReminderState, RootState> = {
-  fetchReminderByUser({ commit }, toto): any {
-    console.log('toto', toto);
+  fetchReminderByUser({ commit }, userId: number): any {
     Axios.get(REMINDER_GET_ALL_EXTEND_BY_USER)
       .then((response) => {
         const payload: IReminderExtended[] = response && response.data;

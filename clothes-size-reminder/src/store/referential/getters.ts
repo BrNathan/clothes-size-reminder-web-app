@@ -4,6 +4,7 @@ import { RootState } from '../types';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 import ISize from '@/utils/types/size';
+import { IClothes } from '@/utils/types/clothes';
 
 const getters: GetterTree<ReferentialState, RootState> = {
   isReady(state): boolean {
@@ -34,8 +35,15 @@ const getters: GetterTree<ReferentialState, RootState> = {
   sizeById(state): any {
     return (sizeId: number): ISize | null => {
       const size: ISize | undefined = state.size
-        .find(g => g.id === sizeId);
+        .find(s => s.id === sizeId);
       return size || null;
+    };
+  },
+  clothesById(state): any {
+    return (clothesId: number): IClothes | null => {
+      const clothes: IClothes | undefined = state.clothes
+        .find(c => c.id === clothesId);
+      return clothes || null;
     };
   },
 };

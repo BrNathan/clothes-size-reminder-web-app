@@ -4,13 +4,17 @@
     <router-view name="sideBar"></router-view>
     <v-content>
       <v-container fluid>
-        <v-skeleton-loader
-          :type="'article'"
-          :loading="!isReferentialReady()"
-          transition="fade-transition"
+        <template
+          v-if="isReferentialLoading"
         >
           <router-view></router-view>
-        </v-skeleton-loader>
+        </template>
+        <template v-else>
+          <v-skeleton-loader
+            type="article"
+          >
+          </v-skeleton-loader>
+        </template>
       </v-container>
     </v-content>
     <router-view name="footerBar"></router-view>
@@ -48,8 +52,8 @@ export default class App extends Vue {
   @State('id', { namespace: STORE_USER })
   userId?: number;
 
-  public isReferentialReady(): boolean {
-    return this.isReady ? this.isReady : false;
+  public get isReferentialLoading(): boolean {
+    return !!this.isReady;
   }
 
   mounted() {

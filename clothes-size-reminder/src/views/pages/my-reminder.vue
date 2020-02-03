@@ -19,7 +19,9 @@
               height="200px"
               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
             >
-              <v-card-title>Top 10 Australian beaches</v-card-title>
+              <v-card-title>
+                {{getClothesLabel(reminder.clothesSize.clothesId)}}
+              </v-card-title>
             </v-img>
 
             <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
@@ -32,17 +34,19 @@
 
             <v-card-actions>
               <v-btn
-                color="orange"
+                color="primary"
                 text
+                disabled="disabled"
               >
-                Share
+                Update
               </v-btn>
 
               <v-btn
-                color="orange"
+                color="warning"
                 text
+                disabled="disabled"
               >
-                Explore
+                Delete
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -71,6 +75,7 @@ import { State, Getter } from 'vuex-class';
 import { STORE_REMINDER, STORE_REFERENTIAL } from '../../store/namespace';
 import { IReminderExtended } from '../../utils/types/reminder';
 import ISize from '@/utils/types/size';
+import { IClothes } from '../../utils/types/clothes';
 
 @Component({
   components: {},
@@ -80,8 +85,14 @@ export default class MyReminder extends Vue {
 
   @Getter('sizeById', { namespace: STORE_REFERENTIAL }) sizeById?: (sizeId: number) => ISize;
 
+  @Getter('clothesById', { namespace: STORE_REFERENTIAL }) clothesById?: (sizeId: number) => IClothes;
+
   public getSizeLabel(sizeId: number): string {
     return this.sizeById ? this.sizeById(sizeId).label : '';
+  }
+
+  public getClothesLabel(clothesId: number): string {
+    return this.clothesById ? this.clothesById(clothesId).label : '';
   }
 }
 </script>
