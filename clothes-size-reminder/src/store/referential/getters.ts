@@ -5,13 +5,15 @@ import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 import ISize from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
+import { IBrand } from '@/utils/types/brand';
 
 const getters: GetterTree<ReferentialState, RootState> = {
   isReady(state): boolean {
     return state.isClothesCategoryReady
       && state.isClothesReady
       && state.isGenderReady
-      && state.isSizeReady;
+      && state.isSizeReady
+      && state.isBrandReady;
   },
   genders(state): IGender[] {
     return state.gender;
@@ -44,6 +46,13 @@ const getters: GetterTree<ReferentialState, RootState> = {
       const clothes: IClothes | undefined = state.clothes
         .find(c => c.id === clothesId);
       return clothes || null;
+    };
+  },
+  brandById(state): any {
+    return (brandId: number): IBrand | null => {
+      const brand: IBrand | undefined = state.brand
+        .find(b => b.id === brandId);
+      return brand || null;
     };
   },
 };

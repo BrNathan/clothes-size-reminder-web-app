@@ -14,21 +14,21 @@
             class="mx-auto"
             max-width="400"
           >
-            <v-img
+            <!-- <v-img
               class="white--text align-end"
               height="200px"
               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
             >
-              <v-card-title>
-                {{getClothesLabel(reminder.clothesSize.clothesId)}}
-              </v-card-title>
-            </v-img>
+            </v-img> -->
+            <v-card-title>
+              {{getClothesLabel(reminder.clothesSize.clothesId)}}
+            </v-card-title>
 
-            <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
+            <v-card-subtitle class="pb-0">
+              {{getBrandLabel(reminder.brandId)}}
+            </v-card-subtitle>
 
             <v-card-text class="text--primary">
-              <div>Whitehaven Beach</div>
-
               <div>{{getSizeLabel(reminder.clothesSize.sizeId)}}</div>
             </v-card-text>
 
@@ -76,6 +76,7 @@ import { STORE_REMINDER, STORE_REFERENTIAL } from '../../store/namespace';
 import { IReminderExtended } from '../../utils/types/reminder';
 import ISize from '@/utils/types/size';
 import { IClothes } from '../../utils/types/clothes';
+import { IBrand } from '../../utils/types/brand';
 
 @Component({
   components: {},
@@ -87,12 +88,18 @@ export default class MyReminder extends Vue {
 
   @Getter('clothesById', { namespace: STORE_REFERENTIAL }) clothesById?: (sizeId: number) => IClothes;
 
+  @Getter('brandById', { namespace: STORE_REFERENTIAL }) brandById?: (brandId: number) => IBrand;
+
   public getSizeLabel(sizeId: number): string {
     return this.sizeById ? this.sizeById(sizeId).label : '';
   }
 
   public getClothesLabel(clothesId: number): string {
     return this.clothesById ? this.clothesById(clothesId).label : '';
+  }
+
+  public getBrandLabel(brandId: number): string {
+    return this.brandById ? this.brandById(brandId).name : '';
   }
 }
 </script>

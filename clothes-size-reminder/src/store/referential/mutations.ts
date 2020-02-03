@@ -4,6 +4,7 @@ import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 import ISize from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
+import { IBrand } from '@/utils/types/brand';
 
 const mutations: MutationTree<ReferentialState> = {
   genderLoaded(state: ReferentialState, payload: IGender[]) {
@@ -21,6 +22,10 @@ const mutations: MutationTree<ReferentialState> = {
   clothesLoaded(state: ReferentialState, payload: IClothes[]) {
     state.clothes = payload;
     state.isClothesReady = true;
+  },
+  brandLoaded(state: ReferentialState, payload: IBrand[]) {
+    state.brand = payload;
+    state.isBrandReady = true;
   },
 };
 

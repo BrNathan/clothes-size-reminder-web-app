@@ -10,10 +10,12 @@ export const state: ReferentialState = {
   isClothesReady: false,
   isGenderReady: false,
   isSizeReady: false,
+  isBrandReady: false,
   clothesCategory: [],
   gender: [],
   size: [],
   clothes: [],
+  brand: [],
 };
 
 const namespaced: boolean = true;

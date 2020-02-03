@@ -71,12 +71,14 @@
 <script lang="ts">
 import Axios, { AxiosResponse } from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import createBrand from '@/components/shared/brands/create-brand.vue';
 import deleteBrand from '@/components/shared/brands/delete-brand.vue';
 import updateBrand from '@/components/shared/brands/update-brand.vue';
 import ITableHeader from '@/utils/types/table-header';
 import { IBrand } from '@/utils/types/brand';
 import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
+import { STORE_REFERENTIAL } from '@/store/namespace';
 
 @Component({
   components: {
@@ -86,6 +88,8 @@ import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
   },
 })
 export default class Brands extends Vue {
+  @Action('fetchBrandData', { namespace: STORE_REFERENTIAL }) fetchBrandData?: () => void;
+
   public isLoading: boolean = false;
 
   public skeletonType: string = 'table';
@@ -120,10 +124,12 @@ export default class Brands extends Vue {
 
   public onNewBrandCreated(): void {
     this.loadBrands();
+    this.refreshStore();
   }
 
   public onBrandDeleted(brandDeleted: IBrand): void {
     this.brands = [...this.brands].filter(brand => brand.id !== brandDeleted.id);
+    this.refreshStore();
   }
 
   public onBrandUpdated(brandUpdated: IBrand): void {
@@ -134,6 +140,7 @@ export default class Brands extends Vue {
 
       return { ...brand };
     });
+    this.refreshStore();
   }
 
   public refreshBrand(): void {
@@ -178,6 +185,12 @@ export default class Brands extends Vue {
           return br;
         });
       });
+  }
+
+  private refreshStore(): void {
+    if (this.fetchBrandData) {
+      this.fetchBrandData();
+    }
   }
 }
 </script>
