@@ -46,6 +46,9 @@ export default class App extends Vue {
   @Action('fetchClothesData', { namespace: STORE_REFERENTIAL })
   fetchClothesData?: () => void;
 
+  @Action('fetchBrandData', { namespace: STORE_REFERENTIAL })
+  fetchBrandData?: () => void;
+
   @Getter('isReady', { namespace: STORE_REFERENTIAL })
   isReady?: boolean;
 
@@ -72,6 +75,15 @@ export default class App extends Vue {
     if (this.fetchClothesData) {
       this.fetchClothesData();
     }
+    if (this.fetchBrandData) {
+      this.fetchBrandData();
+    }
   }
 }
 </script>
+
+<style lang="scss">
+.separator {
+  margin: 0 10px;
+}
+</style>

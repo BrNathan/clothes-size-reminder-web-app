@@ -18,7 +18,7 @@ const layout = {
   footerBar: FooterBar,
 };
 
-const MyReminder = () => import('../views/pages/my-reminder.vue');
+const MyReminders = () => import('../views/pages/my-reminders.vue');
 const Admin = () => import('../views/pages/admin.vue');
 const AdminBrands = () => import('../components/admin/brands.vue');
 const AdminUsers = () => import('../components/admin/users.vue');
@@ -61,14 +61,14 @@ const routes: RouteConfig[] = [
     ],
   },
   {
-    path: '/my-reminder',
-    name: 'my-reminder',
+    path: '/my-reminders',
+    name: 'my-reminders',
     components: {
-      default: MyReminder,
+      default: MyReminders,
       ...layout,
     },
     meta: {
-      title: 'My reminder',
+      title: 'My reminders',
     },
   },
   {
