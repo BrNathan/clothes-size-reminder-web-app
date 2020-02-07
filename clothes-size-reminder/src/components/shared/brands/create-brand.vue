@@ -55,15 +55,23 @@
 import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
+import { Mutation } from 'vuex-class';
 import TableHeader from '@/utils/types/table-header';
-import { INewBrand } from '@/utils/types/brand';
+import { INewBrand, IBrand } from '@/utils/types/brand';
 import { BRAND_CREATE } from '@/utils/api-endpoints';
+import { STORE_REFERENTIAL } from '../../../store/namespace';
 
 @Component({
   components: {},
 })
 export default class CreateBrand extends Vue {
+    @Mutation('addBrand', { namespace: STORE_REFERENTIAL })
+    public addBrandToStore!: (brand: IBrand) => void;
+
+    @Prop({ required: false, default: false })
+    public isAdminMode!: boolean;
+
     public dialog: boolean = false;
 
     public isLoading: boolean = false;
@@ -92,12 +100,13 @@ export default class CreateBrand extends Vue {
       this.newBrand = {
         name: this.brandName,
         corporateName: this.brandCorporateName,
-        isValidated: true,
+        isValidated: this.isAdminMode,
       };
-      Axios.post(BRAND_CREATE, this.newBrand)
+      Axios.post<INewBrand, AxiosResponse<IBrand>>(BRAND_CREATE, this.newBrand)
         .then((result) => {
           // console.log(result);
           this.$emit('brand-created');
+          this.addBrandToStore(result.data);
           this.closeDialog();
         })
         .catch((error) => {

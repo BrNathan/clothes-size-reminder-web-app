@@ -55,6 +55,27 @@ const getters: GetterTree<ReferentialState, RootState> = {
       return brand || null;
     };
   },
+  getBrands(state): IBrand[] {
+    return state.brand.sort((a, b) => {
+      if (a.name < b.name) { return -1; }
+      if (a.name > b.name) { return 1; }
+      return 0;
+    });
+  },
+  getClothes(state): IClothes[] {
+    return state.clothes.sort((a, b) => {
+      if (a.label < b.label) { return -1; }
+      if (a.label > b.label) { return 1; }
+      return 0;
+    });
+  },
+  getSizes(state): ISize[] {
+    return state.size.sort((a, b) => {
+      if (a.label < b.label) { return -1; }
+      if (a.label > b.label) { return 1; }
+      return 0;
+    });
+  },
 };
 
 export default getters;

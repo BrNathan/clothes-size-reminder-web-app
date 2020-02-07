@@ -22,7 +22,9 @@
               <v-text-field
                 label="Code*"
                 required
-                v-model="clothesCode">
+                v-model="clothesCode"
+                :disabled="!isAdminMode"
+                >
               </v-text-field>
             </v-col>
             <v-col cols="12">
@@ -86,9 +88,16 @@ import IClothesCategory from '../../../utils/types/clothes-category';
   components: {},
 })
 export default class CreateClothes extends Vue {
-    @Getter('genders', { namespace: STORE_REFERENTIAL }) genderReferential?: IGender[];
+    @Prop({ required: false, default: false })
+    public isAdminMode!: boolean;
 
-    @Getter('clothescategories', { namespace: STORE_REFERENTIAL }) clothescategoriesReferential?: IClothesCategory[];
+    @Getter('genders', { namespace: STORE_REFERENTIAL })
+    public genderReferential?: IGender[];
+
+    @Getter('clothescategories', { namespace: STORE_REFERENTIAL })
+    public clothescategoriesReferential?: IClothesCategory[];
+
+    private maxClothesCodeLength: number = 45;
 
     public dialog: boolean = false;
 
@@ -145,8 +154,16 @@ export default class CreateClothes extends Vue {
     }
 
     @Watch('clothesCode')
-    public onClothesCodeChange():void {
+    public onClothesCodeChange(): void {
       this.clothesCode = this.clothesCode.toUpperCase();
+    }
+
+    @Watch('clothesLabel')
+    public onClothesLabelChange(): void {
+      const futureCode: string = this.clothesLabel.replace(/[^a-z]/g, '_');
+      if (!this.isAdminMode && (futureCode.length < this.maxClothesCodeLength)) {
+        this.clothesCode = futureCode.toUpperCase();
+      }
     }
 }
 </script>

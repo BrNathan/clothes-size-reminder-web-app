@@ -27,6 +27,9 @@ const mutations: MutationTree<ReferentialState> = {
     state.brand = payload;
     state.isBrandReady = true;
   },
+  addBrand(state: ReferentialState, payload: IBrand) {
+    state.brand.push(payload);
+  },
 };
 
 export default mutations;

@@ -2,7 +2,11 @@
   <div id="my-reminder">
     <h1>My Reminder</h1>
     <v-row>
-      <!-- <v-spacer></v-spacer> -->
+      <v-col cols="12">
+        <create-reminder></create-reminder>
+      </v-col>
+    </v-row>
+    <v-row>
       <template v-for="reminder in reminders">
         <v-col
           :key="reminder.id"
@@ -29,10 +33,12 @@ import ISize from '@/utils/types/size';
 import { IClothes } from '../../utils/types/clothes';
 import { IBrand } from '../../utils/types/brand';
 import ReminderItem from '@/components/shared/reminder/reminder-item.vue';
+import CreateReminder from '@/components/shared/reminder/create-reminder.vue';
 
 @Component({
   components: {
     'reminder-item': ReminderItem,
+    'create-reminder': CreateReminder,
   },
 })
 export default class MyReminders extends Vue {
