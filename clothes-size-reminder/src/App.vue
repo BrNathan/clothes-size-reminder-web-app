@@ -86,4 +86,7 @@ export default class App extends Vue {
 .separator {
   margin: 0 10px;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>
