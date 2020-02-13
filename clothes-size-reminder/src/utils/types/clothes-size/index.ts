@@ -1,5 +1,5 @@
 interface IClothesSize {
-  id: number;
+  id?: number;
   clothesId: number;
   sizeId: number;
 }

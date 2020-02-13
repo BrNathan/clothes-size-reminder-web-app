@@ -6,6 +6,9 @@ const mutations: MutationTree<ReminderState> = {
   reminderLoaded(state: ReminderState, payload: IReminderExtended[]) {
     state.reminder = payload;
   },
+  addReminder(state: ReminderState, payload: IReminderExtended) {
+    state.reminder.push(payload);
+  },
 };
 
 export default mutations;

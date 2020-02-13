@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex';
 import { ReferentialState } from './types';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
-import ISize from '@/utils/types/size';
+import { ISize } from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';
 
@@ -27,8 +27,14 @@ const mutations: MutationTree<ReferentialState> = {
     state.brand = payload;
     state.isBrandReady = true;
   },
+  addClothes(state: ReferentialState, payload: IClothes) {
+    state.clothes.push(payload);
+  },
   addBrand(state: ReferentialState, payload: IBrand) {
     state.brand.push(payload);
+  },
+  addSize(state: ReferentialState, payload: ISize) {
+    state.size.push(payload);
   },
 };
 

@@ -1,6 +1,6 @@
 import ICLothesCategory from '@/utils/types/clothes-category';
 import { IGender } from '@/utils/types/gender';
-import ISize from '@/utils/types/size';
+import { ISize } from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';
 

@@ -3,7 +3,7 @@ import { ReferentialState } from './types';
 import { RootState } from '../types';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
-import ISize from '@/utils/types/size';
+import { ISize } from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';
 

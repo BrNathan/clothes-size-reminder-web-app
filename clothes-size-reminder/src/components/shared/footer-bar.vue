@@ -1,6 +1,6 @@
 
 <template>
-  <v-footer app inset>
+  <v-footer app inset absolute>
     <div>Footer</div>
     <v-spacer></v-spacer>
     <div>

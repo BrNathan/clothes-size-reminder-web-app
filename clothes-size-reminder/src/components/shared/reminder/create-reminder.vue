@@ -20,14 +20,38 @@
           <v-row>
             <v-col cols="12">
               <v-autocomplete
+                :items="clothesList"
+                label="Clothes*"
+                item-value="id"
+                item-text="label"
+                v-model="clothesId"
+                required
+                autocomplete="off"
+                :persistent-hint="persistHint"
+                hint="Click on icon to add new clothes"
+                no-data-text="No data - Click on icon to add new clothes"
+              >
+                <template v-slot:append-outer>
+                  <create-clothes>
+                    <template v-slot:button>
+                      <v-icon
+                      class="cursor-pointer"
+                      title="new clothes">mdi-plus-circle-outline</v-icon>
+                    </template>
+                  </create-clothes>
+                </template>
+              </v-autocomplete>
+            </v-col>
+            <v-col cols="12">
+              <v-autocomplete
                 :items="brandsList"
                 label="Brand*"
                 item-value="id"
                 item-text="name"
-                v-model="brand"
+                v-model="brandId"
                 required
                 autocomplete="off"
-                persistent-hint="true"
+                :persistent-hint="persistHint"
                 hint="Click on icon to add new brand"
                 no-data-text="No data - Click on icon to add new brand"
               >
@@ -44,25 +68,27 @@
             </v-col>
             <v-col cols="12">
               <v-autocomplete
-                :items="clothesList"
-                label="Clothes*"
-                item-value="id"
-                item-text="label"
-                v-model="clothes"
-                required
-                autocomplete="off"
-              ></v-autocomplete>
-            </v-col>
-            <v-col cols="12">
-              <v-autocomplete
                 :items="sizesList"
                 label="Size*"
                 item-value="id"
                 item-text="label"
-                v-model="size"
+                v-model="sizeId"
                 required
                 autocomplete="off"
-              ></v-autocomplete>
+                :persistent-hint="persistHint"
+                hint="Click on icon to add new size"
+                no-data-text="No data - Click on icon to add new size"
+              >
+                <template v-slot:append-outer>
+                  <create-size>
+                    <template v-slot:button>
+                      <v-icon
+                      class="cursor-pointer"
+                      title="new size">mdi-plus-circle-outline</v-icon>
+                    </template>
+                  </create-size>
+                </template>
+              </v-autocomplete>
             </v-col>
             <v-col cols="12">
               <v-textarea
@@ -93,21 +119,31 @@
 import {
   Component, Vue,
 } from 'vue-property-decorator';
-import Axios from 'axios';
-import { State, Getter } from 'vuex-class';
-import { IReminder, IReminderExtended } from '@/utils/types/reminder';
+import Axios, { AxiosResponse } from 'axios';
+import { State, Getter, Mutation } from 'vuex-class';
+import { IReminder, IReminderExtended, INewReminderExtended } from '@/utils/types/reminder';
 import { IBrand } from '../../../utils/types/brand';
 import { IClothes } from '../../../utils/types/clothes';
-import ISize from '../../../utils/types/size';
-import { STORE_USER, STORE_REFERENTIAL } from '@/store/namespace';
+import { ISize } from '../../../utils/types/size';
+import { STORE_USER, STORE_REFERENTIAL, STORE_REMINDER } from '@/store/namespace';
 import CreateBrand from '../brands/create-brand.vue';
+import CreateClothes from '../clothes/create-clothes.vue';
+import CreateSize from '../sizes/create-size.vue';
+import { REMINDER_CREATE_EXTEND } from '@/utils/api-endpoints';
 
 @Component({
   components: {
     'create-brand': CreateBrand,
+    'create-clothes': CreateClothes,
+    'create-size': CreateSize,
   },
 })
 export default class CreateReminder extends Vue {
+  @Mutation('addReminder', { namespace: STORE_REMINDER })
+  public addReminderToStore!: (reminder: IReminderExtended) => void;
+
+  public readonly persistHint: boolean = true;
+
   public dialog: boolean = false;
 
   public isLoading: boolean = false;
@@ -130,42 +166,57 @@ export default class CreateReminder extends Vue {
   @Getter('getSizes', { namespace: STORE_REFERENTIAL })
   public sizesList!: ISize[];
 
-  public errorTextarea: any = 0;
+  public brandId: number | null = null;
 
-  public brand: IBrand | null = null;
+  public clothesId: number | null = null;
 
-  public clothes: IClothes | null = null;
-
-  public size: ISize | null = null;
+  public sizeId: number | null = null;
 
   public comment: string = '';
 
+  public newReminder!: INewReminderExtended;
+
   public save() {
     this.isLoading = true;
-    // this.newClothes = {
-    //   code: this.clothesCode,
-    //   label: this.clothesLabel,
-    //   clothesCategoryId: this.clothesCategoryId,
-    //   genderId: this.clothesGenderId,
-    // };
-    // Axios.post(CLOTHES_CREATE, this.newClothes)
-    //   .then((result) => {
-    //     // console.log(result);
-    //     this.$emit('clothes-created');
-    //     this.closeDialog();
-    //   })
-    //   .catch((error) => {
-    //     // console.error(error);
-    //     // debugger;
-    //   })
-    //   .finally(() => {
-    //     this.isLoading = false;
-    //   });
+    if (this.brandId
+    && this.clothesId
+    && this.sizeId) {
+      this.newReminder = {
+        userId: this.userId,
+        brandId: this.brandId,
+        clothesSize: {
+          clothesId: this.clothesId,
+          sizeId: this.sizeId,
+        },
+        comments: this.comment,
+      };
+      Axios.post<INewReminderExtended, AxiosResponse<IReminderExtended>>(
+        REMINDER_CREATE_EXTEND, this.newReminder,
+      )
+        .then((result) => {
+          // console.log(result);
+          this.$emit('reminder-created');
+          this.addReminderToStore(result.data);
+          this.closeDialog();
+        })
+        .catch((error) => {
+          // console.error(error);
+          // debugger;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    }
   }
 
   public closeDialog(): void {
     this.dialog = false;
     this.isLoading = false;
+    this.brandId = null;
+    this.sizeId = null;
+    this.clothesId = null;
+    this.comment = '';
+    this.newReminder = {} as IReminderExtended;
   }
 }
 </script>

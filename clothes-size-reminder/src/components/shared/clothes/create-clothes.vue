@@ -76,9 +76,9 @@ import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import TableHeader from '@/utils/types/table-header';
-import { INewClothes } from '@/utils/types/clothes';
+import { INewClothes, IClothes } from '@/utils/types/clothes';
 import { CLOTHES_CREATE } from '@/utils/api-endpoints';
 import { STORE_REFERENTIAL } from '@/store/namespace';
 import { IGender } from '@/utils/types/gender';
@@ -88,6 +88,9 @@ import IClothesCategory from '../../../utils/types/clothes-category';
   components: {},
 })
 export default class CreateClothes extends Vue {
+    @Mutation('addClothes', { namespace: STORE_REFERENTIAL })
+    public addClothesToStore!: (size: IClothes) => void;
+
     @Prop({ required: false, default: false })
     public isAdminMode!: boolean;
 
@@ -133,6 +136,7 @@ export default class CreateClothes extends Vue {
         .then((result) => {
           // console.log(result);
           this.$emit('clothes-created');
+          this.addClothesToStore(result.data);
           this.closeDialog();
         })
         .catch((error) => {
@@ -160,7 +164,7 @@ export default class CreateClothes extends Vue {
 
     @Watch('clothesLabel')
     public onClothesLabelChange(): void {
-      const futureCode: string = this.clothesLabel.replace(/[^a-z]/g, '_');
+      const futureCode: string = this.clothesLabel.replace(/[^a-z|A-Z]/g, '_');
       if (!this.isAdminMode && (futureCode.length < this.maxClothesCodeLength)) {
         this.clothesCode = futureCode.toUpperCase();
       }
