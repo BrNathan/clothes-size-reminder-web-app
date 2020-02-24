@@ -10,10 +10,12 @@ export interface INewReminder extends IReminderBase {
 
 export interface IReminderExtended extends INewReminderExtended {
   id: number;
+  creationDate: Date;
 }
 
 export interface IReminder extends INewReminder {
   id: number;
+  creationDate: Date;
 }
 
 interface IReminderBase {

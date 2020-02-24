@@ -7,6 +7,9 @@ const getters: GetterTree<ReminderState, RootState> = {
   getReminders(state): IReminderExtended[] {
     return state.reminder ? state.reminder : [];
   },
+  isReminderReady(state): boolean {
+    return state.isReminderReady;
+  },
 };
 
 export default getters;

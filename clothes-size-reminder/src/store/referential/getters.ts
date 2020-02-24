@@ -76,6 +76,36 @@ const getters: GetterTree<ReferentialState, RootState> = {
       return 0;
     });
   },
+  getSizeLabel(state: ReferentialState): any {
+    return (sizeId: number): string => {
+      const size: ISize | undefined = state.size
+        .find(b => b.id === sizeId);
+      if (size) {
+        return size.label;
+      }
+      return '';
+    };
+  },
+  getClothesLabel(state: ReferentialState): any {
+    return (clothesId: number): string => {
+      const clothes: IClothes | undefined = state.clothes
+        .find(b => b.id === clothesId);
+      if (clothes) {
+        return clothes.label;
+      }
+      return '';
+    };
+  },
+  getBrandName(state: ReferentialState): any {
+    return (brandId: number): string => {
+      const brand: IBrand | undefined = state.brand
+        .find(b => b.id === brandId);
+      if (brand) {
+        return brand.name;
+      }
+      return '';
+    };
+  },
 };
 
 export default getters;

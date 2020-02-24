@@ -129,7 +129,7 @@ export default class CreateSize extends Vue {
 
     @Watch('sizeLabel')
     public onSizeLabelChange(): void {
-      const futureCode: string = this.sizeLabel.replace(/[^a-z|A-Z]/g, '_');
+      const futureCode: string = this.sizeLabel.replace(/[^a-z|A-Z|0-9]/g, '_');
       if (!this.isAdminMode && (futureCode.length < this.maxSizeCodeLength)) {
         this.sizeCode = futureCode.toUpperCase();
       }

@@ -4,7 +4,7 @@
       <div v-on="on">
         <slot name="button">
           <v-btn color="primary" dark>
-            Create new Reminder
+            Update Reminder
           </v-btn>
         </slot>
       </div>
@@ -12,7 +12,7 @@
     <v-card>
       <v-card-title>
         <span class="headline">
-            New reminder
+          Update reminder
         </span>
       </v-card-title>
       <v-card-text>
@@ -24,7 +24,7 @@
                 label="Clothes*"
                 item-value="id"
                 item-text="label"
-                v-model="clothesId"
+                v-model="reminder.clothesSize.clothesId"
                 required
                 autocomplete="off"
                 :persistent-hint="persistHint"
@@ -48,7 +48,7 @@
                 label="Brand*"
                 item-value="id"
                 item-text="name"
-                v-model="brandId"
+                v-model="reminder.brandId"
                 required
                 autocomplete="off"
                 :persistent-hint="persistHint"
@@ -72,7 +72,7 @@
                 label="Size*"
                 item-value="id"
                 item-text="label"
-                v-model="sizeId"
+                v-model="reminder.clothesSize.sizeId"
                 required
                 autocomplete="off"
                 :persistent-hint="persistHint"
@@ -93,9 +93,9 @@
             <v-col cols="12">
               <v-textarea
                 label="Comment"
-                v-model="comment"
+                v-model="reminder.comments"
                 counter
-                :rules="commentRules"
+                :rules="commentsRules"
               ></v-textarea>
             </v-col>
           </v-row>
@@ -107,8 +107,8 @@
         <v-btn color="blue darken-1" text @click="closeDialog">
           Close
         </v-btn>
-        <v-btn color="blue darken-1" text @click="save" :loading="isLoading">
-          Create
+        <v-btn color="blue darken-1" text @click="update" :loading="isLoading">
+          Update
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import {
-  Component, Vue,
+  Component, Vue, Prop,
 } from 'vue-property-decorator';
 import Axios, { AxiosResponse } from 'axios';
 import { State, Getter, Mutation } from 'vuex-class';
@@ -129,7 +129,7 @@ import { STORE_USER, STORE_REFERENTIAL, STORE_REMINDER } from '@/store/namespace
 import CreateBrand from '../brands/create-brand.vue';
 import CreateClothes from '../clothes/create-clothes.vue';
 import CreateSize from '../sizes/create-size.vue';
-import { REMINDER_CREATE_EXTEND } from '@/utils/api-endpoints';
+import { REMINDER_CREATE_EXTEND, REMINDER_UPDATE_EXTEND } from '@/utils/api-endpoints';
 
 @Component({
   components: {
@@ -142,19 +142,24 @@ export default class CreateReminder extends Vue {
   @Mutation('addReminder', { namespace: STORE_REMINDER })
   public addReminderToStore!: (reminder: IReminderExtended) => void;
 
+  @Mutation('updateReminder', { namespace: STORE_REMINDER })
+  public updateReminderInStore!: (reminder: IReminderExtended) => void;
+
+  @Prop({ required: true }) public reminder!: IReminderExtended;
+
   public readonly persistHint: boolean = true;
 
   public dialog: boolean = false;
 
   public isLoading: boolean = false;
 
-  private readonly maxCommentLength: number = 100;
+  private readonly maxCommentsLength: number = 100;
 
   @State('id', { namespace: STORE_USER })
   private userId!: number;
 
-  public commentRules: any[] = [
-    (v: string) => v.length <= this.maxCommentLength || `Max ${this.maxCommentLength} characters`,
+  public commentsRules: any[] = [
+    (v: string) => v.length <= this.maxCommentsLength || `Max ${this.maxCommentsLength} characters`,
   ];
 
   @Getter('getBrands', { namespace: STORE_REFERENTIAL })
@@ -172,42 +177,41 @@ export default class CreateReminder extends Vue {
 
   public sizeId: number | null = null;
 
-  public comment: string = '';
+  public comments: string = '';
 
-  public newReminder!: INewReminderExtended;
+  public updatedReminder!: IReminderExtended;
 
-  public save() {
+  public update() {
     this.isLoading = true;
-    if (this.brandId
-    && this.clothesId
-    && this.sizeId) {
-      this.newReminder = {
-        userId: this.userId,
-        brandId: this.brandId,
-        clothesSize: {
-          clothesId: this.clothesId,
-          sizeId: this.sizeId,
-        },
-        comments: this.comment,
-      };
-      Axios.post<INewReminderExtended, AxiosResponse<IReminderExtended>>(
-        REMINDER_CREATE_EXTEND, this.newReminder,
-      )
-        .then((result) => {
-          // console.log(result);
-          this.$emit('reminder-created');
-          result.data.creationDate = new Date(result.data.creationDate);
-          this.addReminderToStore(result.data);
-          this.closeDialog();
-        })
-        .catch((error) => {
-          // console.error(error);
-          // debugger;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    }
+    this.updatedReminder = {
+      id: this.reminder.id,
+      userId: this.userId,
+      brandId: this.reminder.brandId,
+      clothesSize: {
+        clothesId: this.reminder.clothesSize.clothesId,
+        sizeId: this.reminder.clothesSize.sizeId,
+      },
+      comments: this.reminder.comments,
+      creationDate: this.reminder.creationDate,
+    };
+    Axios.put<IReminderExtended, AxiosResponse<IReminderExtended>>(
+      `${REMINDER_UPDATE_EXTEND}/${this.updatedReminder.id}`, this.updatedReminder,
+    )
+      .then((result) => {
+        // console.log(result);
+        result.data.creationDate = new Date(result.data.creationDate);
+        this.$emit('reminder-update', result.data);
+        // this.addReminderToStore(result.data);
+        // this.updateReminderInStore(result.data);
+        this.closeDialog();
+      })
+      .catch((error) => {
+        // console.error(error);
+        // debugger;
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 
   public closeDialog(): void {
@@ -216,8 +220,8 @@ export default class CreateReminder extends Vue {
     this.brandId = null;
     this.sizeId = null;
     this.clothesId = null;
-    this.comment = '';
-    this.newReminder = {} as IReminderExtended;
+    this.comments = '';
+    this.updatedReminder = {} as IReminderExtended;
   }
 }
 </script>

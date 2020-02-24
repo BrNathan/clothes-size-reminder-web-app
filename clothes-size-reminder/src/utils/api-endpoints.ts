@@ -17,6 +17,8 @@ export const SIZE_CREATE = `${API_BASE_URL}api/size`;
 
 export const GENDER_GET_ALL = `${API_BASE_URL}api/gender`;
 
+export const REMINDER_DELETE = `${API_BASE_URL}api/reminder`;
 export const REMINDER_GET_ALL = `${API_BASE_URL}api/reminder`;
 export const REMINDER_CREATE_EXTEND = `${API_BASE_URL}api/reminder/extend`;
+export const REMINDER_UPDATE_EXTEND = `${API_BASE_URL}api/reminder/extend`;
 export const REMINDER_GET_ALL_EXTEND_BY_USER = `${REMINDER_GET_ALL}/extend/user`;

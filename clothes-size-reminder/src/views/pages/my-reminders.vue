@@ -10,8 +10,15 @@
         </create-reminder>
       </v-col>
     </v-row>
-    <v-row>
-      <template v-for="reminder in reminders">
+    <v-row v-if="!isReminderLoading">
+      <v-col cols="12" sm="6" md="3" v-for="i in numberLoading" :key="i">
+        <v-skeleton-loader type="card">
+        </v-skeleton-loader>
+      </v-col>
+    </v-row>
+    <v-row v-else>
+      <template
+      v-for="reminder in reminders.slice().sort((a, b) => b.creationDate - a.creationDate)">
         <v-col :key="reminder.id" cols="12" sm="6" md="3">
           <reminder-item :reminder="{...reminder}"></reminder-item>
         </v-col>
@@ -40,5 +47,14 @@ import CreateReminder from '@/components/shared/reminder/create-reminder.vue';
 export default class MyReminders extends Vue {
   @State('reminder', { namespace: STORE_REMINDER })
   reminders?: IReminderExtended[];
+
+  @Getter('isReminderReady', { namespace: STORE_REMINDER })
+  isReminderReady?: boolean;
+
+  public get isReminderLoading(): boolean {
+    return !!this.isReminderReady;
+  }
+
+  public numberLoading: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 }
 </script>

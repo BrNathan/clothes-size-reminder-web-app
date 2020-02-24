@@ -7,6 +7,7 @@ import { RootState } from '../types';
 
 export const state: ReminderState = {
   reminder: [],
+  isReminderReady: false,
 };
 
 const namespaced: boolean = true;

@@ -164,7 +164,7 @@ export default class CreateClothes extends Vue {
 
     @Watch('clothesLabel')
     public onClothesLabelChange(): void {
-      const futureCode: string = this.clothesLabel.replace(/[^a-z|A-Z]/g, '_');
+      const futureCode: string = this.clothesLabel.replace(/[^a-z|A-Z|0-9]/g, '_');
       if (!this.isAdminMode && (futureCode.length < this.maxClothesCodeLength)) {
         this.clothesCode = futureCode.toUpperCase();
       }
