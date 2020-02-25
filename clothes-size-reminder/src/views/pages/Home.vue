@@ -10,7 +10,7 @@
         <router-link :to="{name: 'admin'}">Go to Admin</router-link>
       </li>
       <li>
-        <router-link :to="{name: 'my-reminders'}">Go to My reminder</router-link>
+        <router-link :to="{name: 'myReminders'}">Go to My reminder</router-link>
       </li>
     </ul>
   </div>

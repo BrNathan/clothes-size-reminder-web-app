@@ -9,7 +9,7 @@ import Home from '@/views/pages/home.vue';
 
 Vue.use(VueRouter);
 
-const baseDocumentPageTitle = 'Clothes Reminder';
+const baseDocumentPageTitle = 'Ryclos';
 const separatorPageTitle = '|';
 
 const layout = {
@@ -62,7 +62,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/my-reminders',
-    name: 'my-reminders',
+    name: 'myReminders',
     components: {
       default: MyReminders,
       ...layout,

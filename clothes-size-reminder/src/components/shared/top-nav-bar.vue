@@ -1,33 +1,16 @@
 <template>
   <v-app-bar app color="primary" dark clipped-left>
     <router-link :to="{name: 'home'}">
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+      <div class="d-flex align-center top-navbar-tilte">
+        <v-icon x-large>mdi-brain</v-icon>
+        <span class="separator"></span>
+        <h1 class="display-1 font-italic font-weight-bold">Ryclos</h1>
+        <span class="title font-italic font-weight-bold separator">-</span>
+        <h1 class="title font-italic">Reminder your Clothes Size</h1>
       </div>
     </router-link>
 
     <v-spacer></v-spacer>
-
-    <!-- <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-      <span class="mr-2">Latest Release</span>
-      <v-icon>mdi-open-in-new</v-icon>
-    </v-btn> -->
   </v-app-bar>
 </template>
 
@@ -39,4 +22,7 @@ export default class TopNavBar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+.top-navbar-tilte {
+  color: white;
+}
 </style>

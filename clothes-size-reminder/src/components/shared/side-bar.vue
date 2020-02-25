@@ -78,6 +78,11 @@ export default class SideBar extends Vue {
       pathName: 'home',
     },
     {
+      title: 'My Reminders',
+      icon: 'mdi-brain',
+      pathName: 'myReminders',
+    },
+    {
       title: 'Administration',
       icon: 'mdi-tune',
       pathName: 'admin',
