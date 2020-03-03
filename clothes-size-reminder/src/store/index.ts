@@ -4,6 +4,7 @@ import { RootState } from './types';
 import { user } from './user';
 import { referential } from './referential';
 import { reminder } from './reminder';
+import { toastr } from './toastr';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ const store: StoreOptions<RootState> = {
     user,
     referential,
     reminder,
+    toastr,
   },
 };
 

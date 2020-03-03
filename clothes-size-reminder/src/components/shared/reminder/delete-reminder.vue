@@ -45,22 +45,19 @@ import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import { IReminderExtended } from '@/utils/types/reminder';
 import { REMINDER_DELETE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL } from '@/store/namespace';
+import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
 import { ISize } from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';
+import { ERROR_DELETE_REMINDER } from '../../../utils/error-messages';
 
 @Component({
   components: {},
 })
 export default class DeleteReminder extends Vue {
-  public dialog: boolean = false;
-
-  public isLoading: boolean = false;
-
   @Prop({ required: true })
   public reminderToDelete!: IReminderExtended;
 
@@ -73,6 +70,16 @@ export default class DeleteReminder extends Vue {
   @Getter('brandById', { namespace: STORE_REFERENTIAL })
   brandById?: (brandId: number) => IBrand;
 
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
+
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
+
+  public dialog: boolean = false;
+
+  public isLoading: boolean = false;
+
   public closeDialog(): void {
     this.dialog = false;
     this.isLoading = false;
@@ -84,12 +91,12 @@ export default class DeleteReminder extends Vue {
     const url: string = `${REMINDER_DELETE}/${this.reminderToDelete.id}`;
     Axios.delete(url)
       .then((result) => {
+        this.displayInfoMessage('Reminder deleted'); // TODO ERROR MESSAGE
         this.$emit('reminder-delete', this.reminderToDelete);
         this.closeDialog();
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_DELETE_REMINDER);
       })
       .finally(() => {
         this.isLoading = false;

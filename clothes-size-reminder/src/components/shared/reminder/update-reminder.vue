@@ -125,11 +125,14 @@ import { IReminder, IReminderExtended, INewReminderExtended } from '@/utils/type
 import { IBrand } from '../../../utils/types/brand';
 import { IClothes } from '../../../utils/types/clothes';
 import { ISize } from '../../../utils/types/size';
-import { STORE_USER, STORE_REFERENTIAL, STORE_REMINDER } from '@/store/namespace';
+import {
+  STORE_USER, STORE_REFERENTIAL, STORE_REMINDER, STORE_TOASTR,
+} from '@/store/namespace';
 import CreateBrand from '../brands/create-brand.vue';
 import CreateClothes from '../clothes/create-clothes.vue';
 import CreateSize from '../sizes/create-size.vue';
 import { REMINDER_CREATE_EXTEND, REMINDER_UPDATE_EXTEND } from '@/utils/api-endpoints';
+import { ERROR_UPDATE_REMINDER } from '../../../utils/error-messages';
 
 @Component({
   components: {
@@ -145,22 +148,17 @@ export default class CreateReminder extends Vue {
   @Mutation('updateReminder', { namespace: STORE_REMINDER })
   public updateReminderInStore!: (reminder: IReminderExtended) => void;
 
-  @Prop({ required: true }) public reminder!: IReminderExtended;
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
 
-  public readonly persistHint: boolean = true;
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
 
-  public dialog: boolean = false;
-
-  public isLoading: boolean = false;
-
-  private readonly maxCommentsLength: number = 100;
+  @Prop({ required: true })
+  public reminder!: IReminderExtended;
 
   @State('id', { namespace: STORE_USER })
   private userId!: number;
-
-  public commentsRules: any[] = [
-    (v: string) => v.length <= this.maxCommentsLength || `Max ${this.maxCommentsLength} characters`,
-  ];
 
   @Getter('getBrands', { namespace: STORE_REFERENTIAL })
   public brandsList!: IBrand[];
@@ -170,6 +168,18 @@ export default class CreateReminder extends Vue {
 
   @Getter('getSizes', { namespace: STORE_REFERENTIAL })
   public sizesList!: ISize[];
+
+  public readonly persistHint: boolean = true;
+
+  public dialog: boolean = false;
+
+  public isLoading: boolean = false;
+
+  private readonly maxCommentsLength: number = 100;
+
+  public commentsRules: any[] = [
+    (v: string) => v.length <= this.maxCommentsLength || `Max ${this.maxCommentsLength} characters`,
+  ];
 
   public brandId: number | null = null;
 
@@ -198,16 +208,13 @@ export default class CreateReminder extends Vue {
       `${REMINDER_UPDATE_EXTEND}/${this.updatedReminder.id}`, this.updatedReminder,
     )
       .then((result) => {
-        // console.log(result);
+        this.displayInfoMessage('Reminder updated'); // TODO ERROR MESSAGE
         result.data.creationDate = new Date(result.data.creationDate);
         this.$emit('reminder-update', result.data);
-        // this.addReminderToStore(result.data);
-        // this.updateReminderInStore(result.data);
         this.closeDialog();
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_UPDATE_REMINDER);
       })
       .finally(() => {
         this.isLoading = false;

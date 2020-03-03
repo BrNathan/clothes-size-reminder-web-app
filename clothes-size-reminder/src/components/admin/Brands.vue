@@ -71,14 +71,15 @@
 <script lang="ts">
 import Axios, { AxiosResponse } from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Mutation } from 'vuex-class';
 import createBrand from '@/components/shared/brands/create-brand.vue';
 import deleteBrand from '@/components/shared/brands/delete-brand.vue';
 import updateBrand from '@/components/shared/brands/update-brand.vue';
 import ITableHeader from '@/utils/types/table-header';
 import { IBrand } from '@/utils/types/brand';
 import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL } from '@/store/namespace';
+import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
+import { ERROR_LOAD_BRAND } from '@/utils/error-messages';
 
 @Component({
   components: {
@@ -89,6 +90,12 @@ import { STORE_REFERENTIAL } from '@/store/namespace';
 })
 export default class Brands extends Vue {
   @Action('fetchBrandData', { namespace: STORE_REFERENTIAL }) fetchBrandData?: () => void;
+
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
+
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
 
   public isLoading: boolean = false;
 
@@ -151,20 +158,14 @@ export default class Brands extends Vue {
     this.isLoading = true;
     Axios.get<any, AxiosResponse<IBrand[]>>(BRAND_GET_ALL)
       .then((result) => {
-        // console.log(result);
         this.brands = (result as AxiosResponse<IBrand[]>).data;
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_LOAD_BRAND);
       })
       .finally(() => {
         this.isLoading = false;
       });
-  }
-
-  public EditBrand = (brand: any) => {
-    // console.error('edit', brand);
   }
 
   public validateBrand(brand: IBrand): void {
@@ -173,10 +174,10 @@ export default class Brands extends Vue {
     const newBrand: IBrand = { ...brand };
     Axios.put<any, AxiosResponse<IBrand>>(`${BRAND_UPDATE}/${newBrand.id}`, newBrand)
       .then((result) => {
-        // console.log(result);
+        this.displayInfoMessage(`${newBrand.name} validated`); // TODO ERROR MESSAGE
       })
       .catch((error) => {
-        // console.error(error);
+        this.displayErrorMessage(`Error when validate : ${newBrand.name}`); // TODO ERROR MESSAGE
         this.brands = this.brands.map((b: IBrand) => {
           let br: IBrand = b;
           if (br.id === newBrand.id) {

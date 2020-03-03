@@ -31,18 +31,28 @@ import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
 import Axios from 'axios';
+import { Mutation } from 'vuex-class';
 import { IBrand } from '@/utils/types/brand';
 import { BRAND_DELETE } from '@/utils/api-endpoints';
+import { STORE_TOASTR } from '@/store/namespace';
+import { ERROR_DELETE_BRAND } from '../../../utils/error-messages';
 
 @Component({
   components: {},
 })
 export default class DeleteBrand extends Vue {
+  @Prop({ required: true })
+  public brandToDelete!: IBrand;
+
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
+
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
+
   public dialog: boolean = false;
 
   public isLoading: boolean = false;
-
-  @Prop({ required: true }) public brandToDelete!: IBrand;
 
   public closeDialog(): void {
     this.dialog = false;
@@ -55,12 +65,12 @@ export default class DeleteBrand extends Vue {
     const url: string = `${BRAND_DELETE}/${this.brandToDelete.id}`;
     Axios.delete(url)
       .then((result) => {
+        this.displayInfoMessage(`${this.brandToDelete.name} deleted`); // TODO ERROR MESSAGE
         this.$emit('brand-delete', this.brandToDelete);
         this.closeDialog();
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_DELETE_BRAND);
       })
       .finally(() => {
         this.isLoading = false;

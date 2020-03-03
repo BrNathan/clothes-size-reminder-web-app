@@ -125,11 +125,14 @@ import { IReminder, IReminderExtended, INewReminderExtended } from '@/utils/type
 import { IBrand } from '../../../utils/types/brand';
 import { IClothes } from '../../../utils/types/clothes';
 import { ISize } from '../../../utils/types/size';
-import { STORE_USER, STORE_REFERENTIAL, STORE_REMINDER } from '@/store/namespace';
+import {
+  STORE_USER, STORE_REFERENTIAL, STORE_REMINDER, STORE_TOASTR,
+} from '@/store/namespace';
 import CreateBrand from '../brands/create-brand.vue';
 import CreateClothes from '../clothes/create-clothes.vue';
 import CreateSize from '../sizes/create-size.vue';
 import { REMINDER_CREATE_EXTEND } from '@/utils/api-endpoints';
+import { ERROR_CREATE_REMINDER } from '../../../utils/error-messages';
 
 @Component({
   components: {
@@ -142,20 +145,11 @@ export default class CreateReminder extends Vue {
   @Mutation('addReminder', { namespace: STORE_REMINDER })
   public addReminderToStore!: (reminder: IReminderExtended) => void;
 
-  public readonly persistHint: boolean = true;
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
 
-  public dialog: boolean = false;
-
-  public isLoading: boolean = false;
-
-  private readonly maxCommentLength: number = 100;
-
-  @State('id', { namespace: STORE_USER })
-  private userId!: number;
-
-  public commentRules: any[] = [
-    (v: string) => v.length <= this.maxCommentLength || `Max ${this.maxCommentLength} characters`,
-  ];
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
 
   @Getter('getBrands', { namespace: STORE_REFERENTIAL })
   public brandsList!: IBrand[];
@@ -166,6 +160,21 @@ export default class CreateReminder extends Vue {
   @Getter('getSizes', { namespace: STORE_REFERENTIAL })
   public sizesList!: ISize[];
 
+  @State('id', { namespace: STORE_USER })
+  private userId!: number;
+
+  public readonly persistHint: boolean = true;
+
+  public dialog: boolean = false;
+
+  public isLoading: boolean = false;
+
+  private readonly maxCommentLength: number = 100;
+
+  public commentRules: any[] = [
+    (v: string) => v.length <= this.maxCommentLength || `Max ${this.maxCommentLength} characters`,
+  ];
+
   public brandId: number | null = null;
 
   public clothesId: number | null = null;
@@ -175,6 +184,36 @@ export default class CreateReminder extends Vue {
   public comment: string = '';
 
   public newReminder!: INewReminderExtended;
+
+  public getBrandName(brandId: number): string {
+    if (this.brandsList) {
+      const brand: IBrand | undefined = this.brandsList.find(b => b.id === brandId);
+      if (brand) {
+        return brand.name;
+      }
+    }
+    return '';
+  }
+
+  public getClothesLabel(clothesId: number): string {
+    if (this.clothesList) {
+      const clothes: IClothes | undefined = this.clothesList.find(c => c.id === clothesId);
+      if (clothes) {
+        return clothes.label;
+      }
+    }
+    return '';
+  }
+
+  public getSizeCode(sizeId: number): string {
+    if (this.sizesList) {
+      const size: ISize | undefined = this.sizesList.find(s => s.id === sizeId);
+      if (size) {
+        return size.code;
+      }
+    }
+    return '';
+  }
 
   public save() {
     this.isLoading = true;
@@ -194,15 +233,17 @@ export default class CreateReminder extends Vue {
         REMINDER_CREATE_EXTEND, this.newReminder,
       )
         .then((result) => {
-          // console.log(result);
+          this.displayInfoMessage(`Reminder :
+            ${this.getBrandName(this.newReminder.brandId)} | 
+            ${this.getClothesLabel(this.newReminder.clothesSize.clothesId)} | 
+            ${this.getSizeCode(this.newReminder.clothesSize.sizeId)} created`); // TODO ERROR MESSAGE
           this.$emit('reminder-created');
           result.data.creationDate = new Date(result.data.creationDate);
           this.addReminderToStore(result.data);
           this.closeDialog();
         })
         .catch((error) => {
-          // console.error(error);
-          // debugger;
+          this.displayErrorMessage(ERROR_CREATE_REMINDER);
         })
         .finally(() => {
           this.isLoading = false;

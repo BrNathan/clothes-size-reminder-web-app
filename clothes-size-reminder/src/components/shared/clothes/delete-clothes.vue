@@ -31,18 +31,28 @@ import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
 import Axios from 'axios';
+import { Mutation } from 'vuex-class';
 import { IClothes } from '@/utils/types/clothes';
 import { CLOTHES_DELETE } from '@/utils/api-endpoints';
+import { STORE_TOASTR } from '@/store/namespace';
+import { ERROR_DELETE_CLOTHES } from '../../../utils/error-messages';
 
 @Component({
   components: {},
 })
 export default class DeleteClothes extends Vue {
+  @Prop({ required: true })
+  public clothesToDelete!: IClothes;
+
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
+
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
+
   public dialog: boolean = false;
 
   public isLoading: boolean = false;
-
-  @Prop({ required: true }) public clothesToDelete!: IClothes;
 
   public closeDialog(): void {
     this.dialog = false;
@@ -55,12 +65,12 @@ export default class DeleteClothes extends Vue {
     const url: string = `${CLOTHES_DELETE}/${this.clothesToDelete.id}`;
     Axios.delete(url)
       .then((result) => {
+        this.displayInfoMessage(`${this.clothesToDelete.label} deleted`); // TODO ERROR MESSAGE
         this.$emit('clothes-delete', this.clothesToDelete);
         this.closeDialog();
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_DELETE_CLOTHES);
       })
       .finally(() => {
         this.isLoading = false;

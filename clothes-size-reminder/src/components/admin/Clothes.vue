@@ -76,16 +76,19 @@
 <script lang="ts">
 import Axios, { AxiosResponse } from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Action, Getter } from 'vuex-class';
+import {
+  State, Action, Getter, Mutation,
+} from 'vuex-class';
 import ITableHeader from '@/utils/types/table-header';
 import { IClothes } from '@/utils/types/clothes';
 import { CLOTHES_GET_ALL, CLOTHES_CATEGORY_GET_ALL } from '@/utils/api-endpoints';
 import IClothesCategory from '@/utils/types/clothes-category';
 import { IGender, GenderEnum, GenderIcon } from '../../utils/types/gender';
-import { STORE_REFERENTIAL } from '../../store/namespace';
+import { STORE_REFERENTIAL, STORE_TOASTR } from '../../store/namespace';
 import createClothes from '@/components/shared/clothes/create-clothes.vue';
 import deleteClothes from '@/components/shared/clothes/delete-clothes.vue';
 import updateClothes from '@/components/shared/clothes/update-clothes.vue';
+import { ERROR_LOAD_CLOTHES } from '../../utils/error-messages';
 
 @Component({
   components: {
@@ -95,11 +98,17 @@ import updateClothes from '@/components/shared/clothes/update-clothes.vue';
   },
 })
 export default class Clothes extends Vue {
-  @Getter('genderById', { namespace: STORE_REFERENTIAL }) genderById?: (genderId: number) => IGender;
+  @Getter('genderById', { namespace: STORE_REFERENTIAL })
+  genderById?: (genderId: number) => IGender;
 
-  @Getter('clothesCategoryById', { namespace: STORE_REFERENTIAL }) clothesCategoryById?: (clothesCategoryId: number) => IClothesCategory;
+  @Getter('clothesCategoryById', { namespace: STORE_REFERENTIAL })
+  clothesCategoryById?: (clothesCategoryId: number) => IClothesCategory;
 
-  @Action('fetchClothesData', { namespace: STORE_REFERENTIAL }) fetchClothesData?: () => void;
+  @Action('fetchClothesData', { namespace: STORE_REFERENTIAL })
+  fetchClothesData?: () => void;
+
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
 
   public isLoading: boolean = false;
 
@@ -145,12 +154,10 @@ export default class Clothes extends Vue {
     this.isLoading = true;
     Axios.get<any, AxiosResponse<IClothes[]>>(CLOTHES_GET_ALL)
       .then((result) => {
-        // console.log(result);
         this.clothes = (result as AxiosResponse<IClothes[]>).data;
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_LOAD_CLOTHES);
       })
       .finally(() => {
         this.isLoading = false;

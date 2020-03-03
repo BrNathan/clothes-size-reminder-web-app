@@ -72,20 +72,29 @@ import {
   Component, Vue, Prop, Watch,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import { IClothes } from '@/utils/types/clothes';
 import { CLOTHES_UPDATE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL } from '@/store/namespace';
+import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
+import { ERROR_UPDATE_CLOTHES } from '../../../utils/error-messages';
 
 @Component({
   components: {},
 })
 export default class UpdateClothes extends Vue {
-  @Getter('genders', { namespace: STORE_REFERENTIAL }) genderReferential?: IGender[];
+  @Getter('genders', { namespace: STORE_REFERENTIAL })
+  genderReferential?: IGender[];
 
-  @Getter('clothescategories', { namespace: STORE_REFERENTIAL }) clothescategoriesReferential?: IClothesCategory[];
+  @Getter('clothescategories', { namespace: STORE_REFERENTIAL })
+  clothescategoriesReferential?: IClothesCategory[];
+
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
+
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
 
   public dialog: boolean = false;
 
@@ -105,12 +114,12 @@ export default class UpdateClothes extends Vue {
     const url: string = `${CLOTHES_UPDATE}/${this.clothesToUpdate.id}`;
     Axios.put(url, this.clothesToUpdate)
       .then((result) => {
+        this.displayInfoMessage(`${this.clothesToUpdate.label} updated`); // TODO ERROR MESSAGE
         this.$emit('clothes-update', this.clothesToUpdate);
         this.closeDialog();
       })
       .catch((error) => {
-        // console.error(error);
-        // debugger;
+        this.displayErrorMessage(ERROR_UPDATE_CLOTHES);
       })
       .finally(() => {
         this.isLoading = false;

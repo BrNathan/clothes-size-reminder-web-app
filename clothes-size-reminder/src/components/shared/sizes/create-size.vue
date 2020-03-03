@@ -61,7 +61,8 @@ import { Mutation } from 'vuex-class';
 import TableHeader from '@/utils/types/table-header';
 import { INewSize, ISize } from '@/utils/types/size';
 import { SIZE_CREATE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL } from '../../../store/namespace';
+import { STORE_REFERENTIAL, STORE_TOASTR } from '../../../store/namespace';
+import { ERROR_CREATE_SIZE } from '../../../utils/error-messages';
 
 @Component({
   components: {},
@@ -72,6 +73,12 @@ export default class CreateSize extends Vue {
 
     @Prop({ required: false, default: false })
     public isAdminMode!: boolean;
+
+    @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+    displayErrorMessage!: (message: string) => void;
+
+    @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+    displayInfoMessage!: (message: string) => void;
 
     public dialog: boolean = false;
 
@@ -106,14 +113,13 @@ export default class CreateSize extends Vue {
       };
       Axios.post<INewSize, AxiosResponse<ISize>>(SIZE_CREATE, this.newSize)
         .then((result) => {
-          // console.log(result);
+          this.displayInfoMessage(`${this.newSize.label} created`); // TODO ERROR MESSAGE
           this.$emit('size-created');
           this.addSizeToStore(result.data);
           this.closeDialog();
         })
         .catch((error) => {
-          // console.error(error);
-          // debugger;
+          this.displayErrorMessage(ERROR_CREATE_SIZE);
         })
         .finally(() => {
           this.isLoading = false;

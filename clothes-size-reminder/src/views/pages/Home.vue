@@ -13,20 +13,50 @@
         <router-link :to="{name: 'myReminders'}">Go to My reminder</router-link>
       </li>
     </ul>
+    <v-btn color="primary" @click="addMessagePrimary">Test Add toastr</v-btn>
+    <v-btn color="warning" @click="addMessageWarning">Test Add toastr</v-btn>
+    <v-btn color="error" @click="addMessageError">Test Add toastr</v-btn>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { State, Action, Getter } from 'vuex-class';
+import { State, Getter, Mutation } from 'vuex-class';
 import { StringStore } from '../../store/types';
+import { STORE_TOASTR } from '../../store/namespace';
 
 @Component({
   components: {},
 })
 export default class Home extends Vue {
+  public count: number = 0;
+
   @State('version') appVersion: StringStore;
 
   @State('name') appName: StringStore;
+
+  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+  displayInfoMessage!: (message: string) => void;
+
+  @Mutation('displayWarningMessage', { namespace: STORE_TOASTR })
+  displayWarningMessage!: (message: string) => void;
+
+  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+  displayErrorMessage!: (message: string) => void;
+
+  public addMessageError(): void {
+    this.displayErrorMessage(`Test msg #${this.count} error`);
+    this.count += 1;
+  }
+
+  public addMessagePrimary(): void {
+    this.displayInfoMessage(`Test msg #${this.count} info`);
+    this.count += 1;
+  }
+
+  public addMessageWarning(): void {
+    this.displayWarningMessage(`Test msg #${this.count} warning`);
+    this.count += 1;
+  }
 }
 </script>

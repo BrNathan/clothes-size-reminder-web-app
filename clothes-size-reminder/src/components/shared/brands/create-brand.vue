@@ -60,7 +60,8 @@ import { Mutation } from 'vuex-class';
 import TableHeader from '@/utils/types/table-header';
 import { INewBrand, IBrand } from '@/utils/types/brand';
 import { BRAND_CREATE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL } from '../../../store/namespace';
+import { STORE_REFERENTIAL, STORE_TOASTR } from '../../../store/namespace';
+import { ERROR_CREATE_BRAND } from '@/utils/error-messages';
 
 @Component({
   components: {},
@@ -68,6 +69,12 @@ import { STORE_REFERENTIAL } from '../../../store/namespace';
 export default class CreateBrand extends Vue {
     @Mutation('addBrand', { namespace: STORE_REFERENTIAL })
     public addBrandToStore!: (brand: IBrand) => void;
+
+    @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
+    displayErrorMessage!: (message: string) => void;
+
+    @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
+    displayInfoMessage!: (message: string) => void;
 
     @Prop({ required: false, default: false })
     public isAdminMode!: boolean;
@@ -104,14 +111,13 @@ export default class CreateBrand extends Vue {
       };
       Axios.post<INewBrand, AxiosResponse<IBrand>>(BRAND_CREATE, this.newBrand)
         .then((result) => {
-          // console.log(result);
+          this.displayInfoMessage(`${this.newBrand.name} created`); // TODO ERROR MESSAGE
           this.$emit('brand-created');
           this.addBrandToStore(result.data);
           this.closeDialog();
         })
         .catch((error) => {
-          // console.error(error);
-          // debugger;
+          this.displayErrorMessage(ERROR_CREATE_BRAND);
         })
         .finally(() => {
           this.isLoading = false;
