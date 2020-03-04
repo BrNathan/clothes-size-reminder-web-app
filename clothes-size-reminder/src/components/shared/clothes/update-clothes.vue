@@ -79,22 +79,17 @@ import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 import { ERROR_UPDATE_CLOTHES } from '../../../utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class UpdateClothes extends Vue {
+export default class UpdateClothes extends BaseComponent {
   @Getter('genders', { namespace: STORE_REFERENTIAL })
   genderReferential?: IGender[];
 
   @Getter('clothescategories', { namespace: STORE_REFERENTIAL })
   clothescategoriesReferential?: IClothesCategory[];
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
-
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
 
   public dialog: boolean = false;
 

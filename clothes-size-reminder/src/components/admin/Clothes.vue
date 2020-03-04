@@ -89,6 +89,7 @@ import createClothes from '@/components/shared/clothes/create-clothes.vue';
 import deleteClothes from '@/components/shared/clothes/delete-clothes.vue';
 import updateClothes from '@/components/shared/clothes/update-clothes.vue';
 import { ERROR_LOAD_CLOTHES } from '../../utils/error-messages';
+import BaseComponent from '../../utils/base-component';
 
 @Component({
   components: {
@@ -97,7 +98,7 @@ import { ERROR_LOAD_CLOTHES } from '../../utils/error-messages';
     'update-clothes': updateClothes,
   },
 })
-export default class Clothes extends Vue {
+export default class Clothes extends BaseComponent {
   @Getter('genderById', { namespace: STORE_REFERENTIAL })
   genderById?: (genderId: number) => IGender;
 
@@ -106,9 +107,6 @@ export default class Clothes extends Vue {
 
   @Action('fetchClothesData', { namespace: STORE_REFERENTIAL })
   fetchClothesData?: () => void;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
 
   public isLoading: boolean = false;
 

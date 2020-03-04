@@ -53,11 +53,12 @@ import { ISize } from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';
 import { ERROR_DELETE_REMINDER } from '../../../utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class DeleteReminder extends Vue {
+export default class DeleteReminder extends BaseComponent {
   @Prop({ required: true })
   public reminderToDelete!: IReminderExtended;
 
@@ -69,12 +70,6 @@ export default class DeleteReminder extends Vue {
 
   @Getter('brandById', { namespace: STORE_REFERENTIAL })
   brandById?: (brandId: number) => IBrand;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
-
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
 
   public dialog: boolean = false;
 

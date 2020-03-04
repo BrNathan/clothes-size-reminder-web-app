@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import BaseComponent from '../../utils/base-component';
 
 interface Tabs {
     title: string;
@@ -28,7 +29,7 @@ interface Tabs {
 @Component({
   components: {},
 })
-export default class Admin extends Vue {
+export default class Admin extends BaseComponent {
     public activeTabs: number = -1;
 
     public tabs: Tabs[] = [{

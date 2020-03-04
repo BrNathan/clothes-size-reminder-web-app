@@ -84,19 +84,14 @@ import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '../../../utils/types/clothes-category';
 import { ERROR_CREATE_CLOTHES } from '../../../utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class CreateClothes extends Vue {
+export default class CreateClothes extends BaseComponent {
     @Mutation('addClothes', { namespace: STORE_REFERENTIAL })
     public addClothesToStore!: (size: IClothes) => void;
-
-    @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-    displayErrorMessage!: (message: string) => void;
-
-    @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-    displayInfoMessage!: (message: string) => void;
 
     @Prop({ required: false, default: false })
     public isAdminMode!: boolean;

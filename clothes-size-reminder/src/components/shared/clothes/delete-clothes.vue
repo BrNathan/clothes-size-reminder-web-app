@@ -36,19 +36,14 @@ import { IClothes } from '@/utils/types/clothes';
 import { CLOTHES_DELETE } from '@/utils/api-endpoints';
 import { STORE_TOASTR } from '@/store/namespace';
 import { ERROR_DELETE_CLOTHES } from '../../../utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class DeleteClothes extends Vue {
+export default class DeleteClothes extends BaseComponent {
   @Prop({ required: true })
   public clothesToDelete!: IClothes;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
-
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
 
   public dialog: boolean = false;
 

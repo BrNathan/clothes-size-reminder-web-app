@@ -24,25 +24,17 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import { StringStore } from '../../store/types';
 import { STORE_TOASTR } from '../../store/namespace';
+import BaseComponent from '@/utils/base-component';
 
 @Component({
   components: {},
 })
-export default class Home extends Vue {
-  public count: number = 0;
-
+export default class Home extends BaseComponent {
   @State('version') appVersion: StringStore;
 
   @State('name') appName: StringStore;
 
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
-
-  @Mutation('displayWarningMessage', { namespace: STORE_TOASTR })
-  displayWarningMessage!: (message: string) => void;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
+  public count: number = 0;
 
   public addMessageError(): void {
     this.displayErrorMessage(`Test msg #${this.count} error`);

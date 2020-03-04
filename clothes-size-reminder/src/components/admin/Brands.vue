@@ -80,6 +80,7 @@ import { IBrand } from '@/utils/types/brand';
 import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
 import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
 import { ERROR_LOAD_BRAND } from '@/utils/error-messages';
+import BaseComponent from '@/utils/base-component';
 
 @Component({
   components: {
@@ -88,14 +89,9 @@ import { ERROR_LOAD_BRAND } from '@/utils/error-messages';
     'update-brand': updateBrand,
   },
 })
-export default class Brands extends Vue {
-  @Action('fetchBrandData', { namespace: STORE_REFERENTIAL }) fetchBrandData?: () => void;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
-
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
+export default class Brands extends BaseComponent {
+  @Action('fetchBrandData', { namespace: STORE_REFERENTIAL })
+  fetchBrandData?: () => void;
 
   public isLoading: boolean = false;
 

@@ -66,11 +66,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ISidebarItem from '@/utils/types/sidebar-item';
+import BaseComponent from '../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class SideBar extends Vue {
+export default class SideBar extends BaseComponent {
   public sidebarMenuItem: ISidebarItem[] = [
     {
       title: 'Home',

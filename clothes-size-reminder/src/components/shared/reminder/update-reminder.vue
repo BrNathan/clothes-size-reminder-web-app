@@ -133,6 +133,7 @@ import CreateClothes from '../clothes/create-clothes.vue';
 import CreateSize from '../sizes/create-size.vue';
 import { REMINDER_CREATE_EXTEND, REMINDER_UPDATE_EXTEND } from '@/utils/api-endpoints';
 import { ERROR_UPDATE_REMINDER } from '../../../utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {
@@ -141,18 +142,12 @@ import { ERROR_UPDATE_REMINDER } from '../../../utils/error-messages';
     'create-size': CreateSize,
   },
 })
-export default class CreateReminder extends Vue {
+export default class CreateReminder extends BaseComponent {
   @Mutation('addReminder', { namespace: STORE_REMINDER })
   public addReminderToStore!: (reminder: IReminderExtended) => void;
 
   @Mutation('updateReminder', { namespace: STORE_REMINDER })
   public updateReminderInStore!: (reminder: IReminderExtended) => void;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
-
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
 
   @Prop({ required: true })
   public reminder!: IReminderExtended;

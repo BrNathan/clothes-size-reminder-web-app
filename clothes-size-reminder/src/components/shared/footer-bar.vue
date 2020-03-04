@@ -15,11 +15,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { State, Action, Getter } from 'vuex-class';
 import { StringStore } from '../../store/types';
+import BaseComponent from '../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class FooterBar extends Vue {
+export default class FooterBar extends BaseComponent {
   @State('version') appVersion : StringStore;
 
   @State('name') appName : StringStore;

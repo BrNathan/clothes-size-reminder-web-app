@@ -76,6 +76,7 @@ import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';
 import UpdateReminder from './update-reminder.vue';
 import DeleteReminder from './delete-reminder.vue';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {
@@ -83,7 +84,7 @@ import DeleteReminder from './delete-reminder.vue';
     'delete-reminder': DeleteReminder,
   },
 })
-export default class ReminderItem extends Vue {
+export default class ReminderItem extends BaseComponent {
   @Prop({ required: true }) public reminder!: IReminderExtended;
 
   @Getter('sizeById', { namespace: STORE_REFERENTIAL }) sizeById?: (sizeId: number) => ISize;

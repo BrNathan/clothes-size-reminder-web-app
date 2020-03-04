@@ -37,6 +37,7 @@ import { IClothes } from '../../utils/types/clothes';
 import { IBrand } from '../../utils/types/brand';
 import ReminderItem from '@/components/shared/reminder/reminder-item.vue';
 import CreateReminder from '@/components/shared/reminder/create-reminder.vue';
+import BaseComponent from '../../utils/base-component';
 
 @Component({
   components: {
@@ -44,7 +45,7 @@ import CreateReminder from '@/components/shared/reminder/create-reminder.vue';
     'create-reminder': CreateReminder,
   },
 })
-export default class MyReminders extends Vue {
+export default class MyReminders extends BaseComponent {
   @State('reminder', { namespace: STORE_REMINDER })
   reminders?: IReminderExtended[];
 

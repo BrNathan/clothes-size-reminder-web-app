@@ -57,19 +57,14 @@ import { IBrand } from '@/utils/types/brand';
 import { BRAND_UPDATE } from '@/utils/api-endpoints';
 import { STORE_TOASTR } from '@/store/namespace';
 import { ERROR_UPDATE_BRAND } from '@/utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class UpdateBrand extends Vue {
+export default class UpdateBrand extends BaseComponent {
   @Prop({ required: true })
   public brandToUpdate!: IBrand;
-
-  @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-  displayErrorMessage!: (message: string) => void;
-
-  @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-  displayInfoMessage!: (message: string) => void;
 
   public dialog: boolean = false;
 

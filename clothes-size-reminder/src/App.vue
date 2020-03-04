@@ -27,6 +27,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
 import { STORE_REFERENTIAL, STORE_REMINDER, STORE_USER } from '@/store/namespace';
 import ToastMessage from './components/toast-message.vue';
+import BaseComponent from './utils/base-component';
 
 @Component({
   name: 'App',
@@ -34,7 +35,7 @@ import ToastMessage from './components/toast-message.vue';
     'toast-message': ToastMessage,
   },
 })
-export default class App extends Vue {
+export default class App extends BaseComponent {
   @Action('fetchGenderData', { namespace: STORE_REFERENTIAL })
   fetchGenderData?: () => void;
 

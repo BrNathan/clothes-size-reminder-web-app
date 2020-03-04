@@ -16,9 +16,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import BaseComponent from '../../utils/base-component';
 
 @Component({})
-export default class TopNavBar extends Vue {}
+export default class TopNavBar extends BaseComponent {}
 </script>
 
 <style lang="scss" scoped>

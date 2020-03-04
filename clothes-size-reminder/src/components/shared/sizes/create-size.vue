@@ -63,22 +63,17 @@ import { INewSize, ISize } from '@/utils/types/size';
 import { SIZE_CREATE } from '@/utils/api-endpoints';
 import { STORE_REFERENTIAL, STORE_TOASTR } from '../../../store/namespace';
 import { ERROR_CREATE_SIZE } from '../../../utils/error-messages';
+import BaseComponent from '../../../utils/base-component';
 
 @Component({
   components: {},
 })
-export default class CreateSize extends Vue {
+export default class CreateSize extends BaseComponent {
     @Mutation('addSize', { namespace: STORE_REFERENTIAL })
     public addSizeToStore!: (size: ISize) => void;
 
     @Prop({ required: false, default: false })
     public isAdminMode!: boolean;
-
-    @Mutation('displayErrorMessage', { namespace: STORE_TOASTR })
-    displayErrorMessage!: (message: string) => void;
-
-    @Mutation('displayInfoMessage', { namespace: STORE_TOASTR })
-    displayInfoMessage!: (message: string) => void;
 
     public dialog: boolean = false;
 

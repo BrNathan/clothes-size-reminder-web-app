@@ -31,9 +31,10 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import { State, Mutation, Getter } from 'vuex-class';
 import { STORE_TOASTR } from '../store/namespace';
 import { ToastrMessage, ToastrPriority } from '../store/toastr/types';
+import BaseComponent from '../utils/base-component';
 
 @Component({})
-export default class ToastMessage extends Vue {
+export default class ToastMessage extends BaseComponent {
   @State('isShown', { namespace: STORE_TOASTR })
   private isToastrShown!: boolean;
 
