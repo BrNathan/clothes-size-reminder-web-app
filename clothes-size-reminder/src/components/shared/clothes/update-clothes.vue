@@ -69,13 +69,13 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Prop, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Getter, Mutation } from 'vuex-class';
+import { Getter } from 'vuex-class';
 import { IClothes } from '@/utils/types/clothes';
 import { CLOTHES_UPDATE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
+import { STORE_REFERENTIAL } from '@/store/namespace';
 import { IGender } from '@/utils/types/gender';
 import IClothesCategory from '@/utils/types/clothes-category';
 import { ERROR_UPDATE_CLOTHES } from '../../../utils/error-messages';

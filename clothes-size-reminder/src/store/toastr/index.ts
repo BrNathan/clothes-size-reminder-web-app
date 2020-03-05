@@ -2,17 +2,12 @@ import { Module } from 'vuex';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
-import { ToastrState, ToastrPriority } from './types';
+import { ToastrState } from './types';
 import { RootState } from '../types';
 
 export const state: ToastrState = {
   isShown: false,
-  messages: [
-    // { message: 'TEST 1', priority: ToastrPriority.Error },
-    // { message: 'TEST 2', priority: ToastrPriority.Error },
-    // { message: 'TEST 3', priority: ToastrPriority.Error },
-    // { message: 'TEST 4', priority: ToastrPriority.Error },
-  ],
+  messages: [],
 };
 
 const namespaced: boolean = true;

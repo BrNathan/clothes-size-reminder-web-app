@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import { State, Mutation, Getter } from 'vuex-class';
 import { STORE_TOASTR } from '../store/namespace';
 import { ToastrMessage, ToastrPriority } from '../store/toastr/types';

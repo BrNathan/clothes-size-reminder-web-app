@@ -4,16 +4,11 @@
     <router-view name="sideBar"></router-view>
     <v-content>
       <v-container fluid>
-        <template
-          v-if="isReferentialLoading"
-        >
+        <template v-if="isReferentialLoading">
           <router-view></router-view>
         </template>
         <template v-else>
-          <v-skeleton-loader
-            type="article"
-          >
-          </v-skeleton-loader>
+          <v-skeleton-loader type="article"></v-skeleton-loader>
         </template>
       </v-container>
     </v-content>
@@ -23,11 +18,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
-import { STORE_REFERENTIAL, STORE_REMINDER, STORE_USER } from '@/store/namespace';
+import {
+  STORE_REFERENTIAL,
+  STORE_REMINDER,
+  STORE_USER,
+} from '@/store/namespace';
 import ToastMessage from './components/toast-message.vue';
 import BaseComponent from './utils/base-component';
+
 
 @Component({
   name: 'App',

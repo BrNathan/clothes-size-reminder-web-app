@@ -42,13 +42,13 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Prop, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Getter, Mutation } from 'vuex-class';
+import { Getter } from 'vuex-class';
 import { IReminderExtended } from '@/utils/types/reminder';
 import { REMINDER_DELETE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
+import { STORE_REFERENTIAL } from '@/store/namespace';
 import { ISize } from '@/utils/types/size';
 import { IClothes } from '@/utils/types/clothes';
 import { IBrand } from '@/utils/types/brand';

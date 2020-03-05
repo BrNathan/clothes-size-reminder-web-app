@@ -70,15 +70,15 @@
 
 <script lang="ts">
 import Axios, { AxiosResponse } from 'axios';
-import { Component, Vue } from 'vue-property-decorator';
-import { Action, Mutation } from 'vuex-class';
+import { Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import createBrand from '@/components/shared/brands/create-brand.vue';
 import deleteBrand from '@/components/shared/brands/delete-brand.vue';
 import updateBrand from '@/components/shared/brands/update-brand.vue';
 import ITableHeader from '@/utils/types/table-header';
 import { IBrand } from '@/utils/types/brand';
 import { BRAND_GET_ALL, BRAND_UPDATE } from '@/utils/api-endpoints';
-import { STORE_REFERENTIAL, STORE_TOASTR } from '@/store/namespace';
+import { STORE_REFERENTIAL } from '@/store/namespace';
 import { ERROR_LOAD_BRAND } from '@/utils/error-messages';
 import BaseComponent from '@/utils/base-component';
 

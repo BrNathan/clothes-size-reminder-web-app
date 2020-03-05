@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Prop,
+  Component, Prop,
 } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
 import { IReminderExtended } from '../../../utils/types/reminder';

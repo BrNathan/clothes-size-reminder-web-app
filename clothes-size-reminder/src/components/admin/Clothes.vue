@@ -75,16 +75,16 @@
 
 <script lang="ts">
 import Axios, { AxiosResponse } from 'axios';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import {
-  State, Action, Getter, Mutation,
+  Action, Getter,
 } from 'vuex-class';
 import ITableHeader from '@/utils/types/table-header';
 import { IClothes } from '@/utils/types/clothes';
-import { CLOTHES_GET_ALL, CLOTHES_CATEGORY_GET_ALL } from '@/utils/api-endpoints';
+import { CLOTHES_GET_ALL } from '@/utils/api-endpoints';
 import IClothesCategory from '@/utils/types/clothes-category';
 import { IGender, GenderEnum, GenderIcon } from '../../utils/types/gender';
-import { STORE_REFERENTIAL, STORE_TOASTR } from '../../store/namespace';
+import { STORE_REFERENTIAL } from '../../store/namespace';
 import createClothes from '@/components/shared/clothes/create-clothes.vue';
 import deleteClothes from '@/components/shared/clothes/delete-clothes.vue';
 import updateClothes from '@/components/shared/clothes/update-clothes.vue';

@@ -28,13 +28,11 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Prop, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Mutation } from 'vuex-class';
 import { IClothes } from '@/utils/types/clothes';
 import { CLOTHES_DELETE } from '@/utils/api-endpoints';
-import { STORE_TOASTR } from '@/store/namespace';
 import { ERROR_DELETE_CLOTHES } from '../../../utils/error-messages';
 import BaseComponent from '../../../utils/base-component';
 

@@ -117,16 +117,16 @@
 
 <script lang="ts">
 import {
-  Component, Vue,
+  Component,
 } from 'vue-property-decorator';
 import Axios, { AxiosResponse } from 'axios';
 import { State, Getter, Mutation } from 'vuex-class';
-import { IReminder, IReminderExtended, INewReminderExtended } from '@/utils/types/reminder';
+import { IReminderExtended, INewReminderExtended } from '@/utils/types/reminder';
 import { IBrand } from '../../../utils/types/brand';
 import { IClothes } from '../../../utils/types/clothes';
 import { ISize } from '../../../utils/types/size';
 import {
-  STORE_USER, STORE_REFERENTIAL, STORE_REMINDER, STORE_TOASTR,
+  STORE_USER, STORE_REFERENTIAL, STORE_REMINDER,
 } from '@/store/namespace';
 import CreateBrand from '../brands/create-brand.vue';
 import CreateClothes from '../clothes/create-clothes.vue';

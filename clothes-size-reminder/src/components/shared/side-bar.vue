@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import ISidebarItem from '@/utils/types/sidebar-item';
 import BaseComponent from '../../utils/base-component';
 

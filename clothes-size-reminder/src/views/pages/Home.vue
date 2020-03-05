@@ -20,10 +20,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
+import { Component } from 'vue-property-decorator';
+import { State } from 'vuex-class';
 import { StringStore } from '../../store/types';
-import { STORE_TOASTR } from '../../store/namespace';
 import BaseComponent from '@/utils/base-component';
 
 @Component({

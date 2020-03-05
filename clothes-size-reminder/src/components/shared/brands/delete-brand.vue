@@ -28,13 +28,11 @@
 
 <script lang="ts">
 import {
-  Component, Vue, Prop, Watch,
+  Component, Prop,
 } from 'vue-property-decorator';
 import Axios from 'axios';
-import { Mutation } from 'vuex-class';
 import { IBrand } from '@/utils/types/brand';
 import { BRAND_DELETE } from '@/utils/api-endpoints';
-import { STORE_TOASTR } from '@/store/namespace';
 import { ERROR_DELETE_BRAND } from '../../../utils/error-messages';
 import BaseComponent from '../../../utils/base-component';
 
