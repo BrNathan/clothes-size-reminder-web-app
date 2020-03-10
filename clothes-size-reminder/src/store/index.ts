@@ -10,8 +10,8 @@ Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
-    version: '0.0.1',
-    name: 'ClothesReminder',
+    version: '0.1.0',
+    name: 'Ryclos',
   },
   mutations: {
   },
